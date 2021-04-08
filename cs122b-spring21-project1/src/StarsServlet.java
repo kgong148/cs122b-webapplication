@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 
@@ -41,7 +42,7 @@ public class StarsServlet extends HttpServlet {
             // Declare our statement
             Statement statement = dbcon.createStatement();
 
-            String query = "SELECT * from stars";
+            String query = "SELECT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId) ORDER BY r.rating DESC LIMIT 20";
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -50,19 +51,65 @@ public class StarsServlet extends HttpServlet {
 
             // Iterate through each row of rs
             while (rs.next()) {
-                String star_id = rs.getString("id");
-                String star_name = rs.getString("name");
-                String star_dob = rs.getString("birthYear");
+                String movie_id = rs.getString("id");
+                //System.out.println(rs.getString("title"));
+                String movie_title = rs.getString("title");
+                String movie_year = rs.getString("year");
+                String movie_director = rs.getString("director");
+
+                //Add 3 genres and 3 stars
+                String q1 = "SELECT DISTINCT g.name " +
+                        "FROM movies m, genres_in_movies gim, genres g " +
+                        "WHERE m.id = gim.movieId AND gim.genreId = g.id " +
+                        "AND m.id =? "+
+                        "LIMIT 3";
+
+                PreparedStatement s1 = dbcon.prepareStatement(q1);
+                s1.setString(1, movie_id);
+
+                // Perform the query
+                ResultSet rs_t1 = s1.executeQuery();
+
+                String q2 = "SELECT DISTINCT s.name, s.id " +
+                        "FROM movies m, stars_in_movies sim, stars s " +
+                        "WHERE m.id = sim.movieId AND sim.starId = s.id " +
+                        "AND m.id =? "+
+                        "LIMIT 3";
+
+                PreparedStatement s2 = dbcon.prepareStatement(q2);
+                s2.setString(1, movie_id);
+
+                // Perform the query
+                ResultSet rs_t2 = s2.executeQuery();
 
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("star_id", star_id);
-                jsonObject.addProperty("star_name", star_name);
-                jsonObject.addProperty("star_dob", star_dob);
+                jsonObject.addProperty("movie_id", movie_id);
+                jsonObject.addProperty("movie_title", movie_title);
+                jsonObject.addProperty("movie_year", movie_year);
+                jsonObject.addProperty("movie_director", movie_director);
+
+                for(int i = 0; i < 3; i++)
+                {
+                    if(rs_t1.next())
+                        jsonObject.addProperty("movie_genre_" + i, rs_t1.getString("name"));
+                    else
+                        jsonObject.addProperty("movie_genre_" + i, "");
+                    if(rs_t2.next())
+                    {
+                        jsonObject.addProperty("movie_stars_" + i, rs_t2.getString("name"));
+                        jsonObject.addProperty("movie_stars_id_" + i, rs_t2.getString("id"));
+                    }
+                    else {
+                        jsonObject.addProperty("movie_stars_" + i, "");
+                        jsonObject.addProperty("movie_stars_id_" + i, "");
+                    }
+                }
+
 
                 jsonArray.add(jsonObject);
             }
-            
+
             // write JSON string to output
             out.write(jsonArray.toString());
             // set response status to 200 (OK)
@@ -72,7 +119,7 @@ public class StarsServlet extends HttpServlet {
             statement.close();
             dbcon.close();
         } catch (Exception e) {
-        	
+
 			// write error message JSON object to output
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("errorMessage", e.getMessage());

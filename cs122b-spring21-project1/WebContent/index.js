@@ -21,6 +21,7 @@ function handleStarResult(resultData) {
     let starTableBodyElement = jQuery("#star_table_body");
 
     // Iterate through resultData, no more than 10 entries
+    let genre_str;
     for (let i = 0; i < Math.min(20, resultData.length); i++) {
 
         // Concatenate the html tags with resultData jsonObject
@@ -29,11 +30,28 @@ function handleStarResult(resultData) {
         rowHTML +=
             "<th>" +
             // Add a link to single-star.html with id passed with GET url parameter
-            '<a href="single-star.html?id=' + resultData[i]['star_id'] + '">'
-            + resultData[i]["star_name"] +     // display star_name for the link text
+            '<a href="single-movie.html?id=' + resultData[i]['movie_id'] + '">'
+            + resultData[i]["movie_title"] +     // display movie_name for the link text
             '</a>' +
             "</th>";
-        rowHTML += "<th>" + resultData[i]["star_dob"] + "</th>";
+
+        rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
+        rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
+
+        rowHTML += "<th>";
+        rowHTML += resultData[i]["movie_genre_0"];
+        if (resultData[i]["movie_genre_1"] != "") rowHTML += (", " + resultData[i]["movie_genre_1"]);
+        if (resultData[i]["movie_genre_2"] != "") rowHTML += (", " + resultData[i]["movie_genre_2"]);
+        rowHTML += "</th>";
+
+        rowHTML += "<th>"
+        rowHTML += ('<a href="single-star.html?id=' + resultData[i]['movie_stars_id_0'] + '">'
+            + resultData[i]["movie_stars_0"] + '</a>');
+        if(resultData[i]["movie_stars_1"] != "")
+            rowHTML+= ", "+('<a href="single-star.html?id=' + resultData[i]['movie_stars_id_1'] + '">' + resultData[i]["movie_stars_1"] + '</a>');
+        if(resultData[i]["movie_stars_2"] != "")
+            rowHTML+= ", "+('<a href="single-star.html?id=' + resultData[i]['movie_stars_id_2'] + '">' + resultData[i]["movie_stars_2"] + '</a>');
+        rowHTML+= "</th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
