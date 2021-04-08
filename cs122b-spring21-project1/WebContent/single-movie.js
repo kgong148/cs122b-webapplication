@@ -48,7 +48,7 @@ function handleResult(resultData) {
     movieInfoElement.append("<p>Movie title: " + resultData[0]["movie_title"] + "</p>" +
         "<p>Year: " + resultData[0]["movie_year"] + "</p>" +
         "<p>Director: " + resultData[0]["movie_director"] + "</p>"+
-        '<a href="">' + "Return to MovieList" + '</a>');
+        '<a href="http://ec2-3-135-199-88.us-east-2.compute.amazonaws.com:8080/cs122b-spring21-project1/">' + "Return to MovieList" + '</a>');
 
     console.log("handleResult: populating movie table from resultData");
 
