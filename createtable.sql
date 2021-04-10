@@ -20,6 +20,7 @@ CREATE TABLE stars (
 CREATE TABLE stars_in_movies (
   starId varchar(10), 
   movieId varchar(10),
+  PRIMARY KEY (starId, movieId),
   FOREIGN KEY (starId) REFERENCES stars (id),
   FOREIGN KEY (movieId) REFERENCES movies (id)
 );
@@ -33,6 +34,7 @@ CREATE TABLE genres (
 CREATE TABLE genres_in_movies (
   genreId integer,
   movieId varchar(10),
+  PRIMARY KEY(genreId, movieId),
   FOREIGN KEY (genreId) REFERENCES genres (id),
   FOREIGN KEY (movieId) REFERENCES movies (id)
 );
