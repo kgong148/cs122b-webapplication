@@ -50,7 +50,7 @@ function handleResult(resultData) {
         "<p>Director: " + resultData[0]["movie_director"] + "</p>"+
         "<p>Genres: " + resultData[0]["movie_genres"] + "</p>"+
         "<p>Rating: " + resultData[0]["movie_rating"] + "</p>"+
-        '<a href=" ec2-3-141-4-43.us-east-2.compute.amazonaws.com:8080/cs122b-spring21-project1/">' + "Return to MovieList" + '</a>');
+        '<a href="http://ec2-3-141-4-43.us-east-2.compute.amazonaws.com:8080/cs122b-spring21-project1/">' + "Return to MovieList" + '</a>');
 
     console.log("handleResult: populating movie table from resultData");
 
