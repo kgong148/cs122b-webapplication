@@ -48,9 +48,18 @@ public class SingleMovieServlet extends HttpServlet {
         try {
             // Get a connection from dataSource
             Connection dbcon = dataSource.getConnection();
+            String q_genres = "SELECT DISTINCT g.name " +
+                    "FROM movies m, genres_in_movies gim, genres g " +
+                    "WHERE m.id = gim.movieId AND gim.genreId = g.id " +
+                    "AND m.id =? ";
+
+            PreparedStatement s1 = dbcon.prepareStatement(q_genres);
+            s1.setString(1, id);
+
+            ResultSet rs1 = s1.executeQuery();
 
             // Construct a query with parameter represented by "?"
-            String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m where s.id = sim.starId and sim.starId = s.id and m.id = ?";
+            String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m, ratings as r where s.id = sim.starId and sim.movieId = m.id and r.movieId = m.id and m.id = ?";
 
             // Declare our statement
             PreparedStatement statement = dbcon.prepareStatement(query);
@@ -64,26 +73,43 @@ public class SingleMovieServlet extends HttpServlet {
 
             JsonArray jsonArray = new JsonArray();
 
+            //adding genres
+            JsonObject jsonObject_g = new JsonObject();
+            int count = 0;
+            rs.next();
+            String movieId = rs.getString("movieId");
+            String movieTitle = rs.getString("title");
+            String movieYear = rs.getString("year");
+            String movieDirector = rs.getString("director");
+            String movieRating = rs.getString("rating");
+            jsonObject_g.addProperty("movie_id", movieId);
+            jsonObject_g.addProperty("movie_title", movieTitle);
+            jsonObject_g.addProperty("movie_year", movieYear);
+            jsonObject_g.addProperty("movie_director", movieDirector);
+            jsonObject_g.addProperty("movie_rating", movieRating);
+            jsonObject_g.addProperty("star_id", rs.getString("starId"));
+            jsonObject_g.addProperty("star_name", rs.getString("name"));
+
+            rs1.next();
+            String movie_genres = rs1.getString("name");
+            while(rs1.next())
+            {
+                movie_genres += ", " + rs1.getString("name");
+            }
+            jsonObject_g.addProperty("movie_genres",movie_genres);
+            jsonArray.add(jsonObject_g);
+
             // Iterate through each row of rs
             while (rs.next()) {
 
                 String starId = rs.getString("starId");
                 String starName = rs.getString("name");
 
-                String movieId = rs.getString("movieId");
-                String movieTitle = rs.getString("title");
-                String movieYear = rs.getString("year");
-                String movieDirector = rs.getString("director");
-
                 // Create a JsonObject based on the data we retrieve from rs
 
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("star_id", starId);
                 jsonObject.addProperty("star_name", starName);
-                jsonObject.addProperty("movie_id", movieId);
-                jsonObject.addProperty("movie_title", movieTitle);
-                jsonObject.addProperty("movie_year", movieYear);
-                jsonObject.addProperty("movie_director", movieDirector);
 
                 jsonArray.add(jsonObject);
             }
@@ -102,10 +128,11 @@ public class SingleMovieServlet extends HttpServlet {
             jsonObject.addProperty("errorMessage", e.getMessage());
             out.write(jsonObject.toString());
 
-            // set reponse status to 500 (Internal Server Error)
+            // set response status to 500 (Internal Server Error)
             response.setStatus(500);
+        } finally {
+            out.close();
         }
-        out.close();
 
     }
 

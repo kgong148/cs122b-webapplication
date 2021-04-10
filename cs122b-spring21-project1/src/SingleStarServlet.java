@@ -106,9 +106,9 @@ public class SingleStarServlet extends HttpServlet {
 
 			// set reponse status to 500 (Internal Server Error)
 			response.setStatus(500);
+		} finally {
+			out.close();
 		}
-		out.close();
-
 	}
 
 }
