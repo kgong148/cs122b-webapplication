@@ -48,9 +48,7 @@ function handleResult(resultData) {
     movieInfoElement.append("<p>Movie title: " + resultData[0]["movie_title"] + "</p>" +
         "<p>Year: " + resultData[0]["movie_year"] + "</p>" +
         "<p>Director: " + resultData[0]["movie_director"] + "</p>"+
-        "<p>Genres: " + resultData[0]["movie_genres"] + "</p>"+
-        "<p>Rating: " + resultData[0]["movie_rating"] + "</p>"+
-        '<a href="http://ec2-3-141-4-43.us-east-2.compute.amazonaws.com:8080/cs122b-spring21-project1/">' + "Return to MovieList" + '</a>');
+        '<a href="http://ec2-3-16-207-123.us-east-2.compute.amazonaws.com:8080/cs122b-spring21-project1">' + "Return to MovieList" + '</a>');
 
     console.log("handleResult: populating movie table from resultData");
 
@@ -61,7 +59,7 @@ function handleResult(resultData) {
     let starTableBodyElement = jQuery("#star_table_body");
 
     // Concatenate the html tags with resultData jsonObject to create table rows
-    for (let i = 0; i < resultData.length; i++) {
+    for (let i = 0; i < Math.min(20, resultData.length); i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
         rowHTML +=
