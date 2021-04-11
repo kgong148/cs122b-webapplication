@@ -2,7 +2,7 @@
  
  ## Demo Video URL
  
- ** insert here **
+ https://drive.google.com/drive/folders/1Pa0sAOx8Wt2O5R0HR2FBDWF_WVlSJrML?usp=sharing
  
  ## How to deploy applicaion with with Tomcat
  In order to deploy the application on aws with Tomcat you need to have MySQL, Tomcat and maven installed on the aws instance and have it running. 
