@@ -47,7 +47,7 @@ function handleResult(resultData) {
     // append two html <p> created to the h3 body, which will refresh the page
     starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] + "</p>" +
         "<p>Date Of Birth: " + ((resultData[0]["star_dob"] == null) ? "N/A" : resultData[0]["star_dob"]) + "</p>" +
-        '<a href="http://ec2-3-128-200-18.us-east-2.compute.amazonaws.com:8080/cs122b-spring21-project1">' + "Return to MovieList" + '</a>');
+        '<a href="\movie-list.html">' + "Return to MovieList" + '</a>');
 
     console.log("handleResult: populating movie table from resultData");
 
