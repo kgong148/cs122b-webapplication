@@ -8,6 +8,26 @@
  *      2. Populate the data to correct html elements.
  */
 
+/**
+ * Retrieve parameter from request URL, matching by parameter name
+ * @param target String
+ * @returns {*}
+ */
+function getParameterByName(target) {
+    // Get request URL
+    let url = window.location.href;
+    // Encode target parameter name to url encoding
+    target = target.replace(/[\[\]]/g, "\\$&");
+
+    // Ues regular expression to find matched parameter value
+    let regex = new RegExp("[?&]" + target + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+
+    // Return the decoded parameter value
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
@@ -64,10 +84,33 @@ function handleMovieResult(resultData) {
  * Once this .js is loaded, following scripts will be executed by the browser
  */
 
+let searchTitle = getParameterByName('title');
+let searchYear = getParameterByName('year');
+let searchDirector = getParameterByName('director');
+let searchStars = getParameterByName('stars');
+
+let params = "";
+if(searchTitle != "" && searchTitle != null) params += "title="+searchTitle;
+if(searchYear != "" && searchYear != null)
+{
+    if(params.length != "") url += "&";
+    params += "year="+searchYear;
+}
+if(searchDirector != "" && searchDirector != null)
+{
+    if(params.length != "") params += "&";
+    params += "director="+searchDirector;
+}
+if(searchStars != "" && searchStars != null)
+{
+    if(params.length != "") params += "&";
+    params += "stars="+searchStars;
+}
+
 // Makes the HTTP GET request and registers on success callback function handleMovieResult
 jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
-    url: "api/movie-list", // Setting request url
+    url: "api/movie-list?" + params, // Setting request url
     success: (resultData) => handleMovieResult(resultData) // Setting callback function to handle data returned successfully by the MovieListServlet
 });

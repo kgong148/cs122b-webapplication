@@ -5,9 +5,35 @@
 </head>
 
 <body BGCOLOR="#FDF5E6">
-<h1 ALIGN="CENTER">Form Example</h1>
-
-
+<h1 ALIGN="CENTER">Search/Browse</h1>
+<h2>Search</h2>
+<br>
+<form id="search_form" method="get" action="#">
+    <label><b>Title</b></label>
+    <label>
+        <input name="title" placeholder="Title" type="text">
+    </label>
+    <br>
+    <label><b>Year</b></label>
+    <label>
+        <input name="year" placeholder="Year" type="text">
+    </label>
+    <br>
+    <label><b>Director</b></label>
+    <label>
+        <input name="director" placeholder="Director" type="text">
+    </label>
+    <br>
+    <label><b>Stars</b></label>
+    <label>
+        <input name="stars" placeholder="Stars" type="text">
+    </label>
+    <br>
+    <input type="submit" value="Search">
+</form>
+<h2>Browse</h2>
+<h3>Genres</h3>
+<div id="genre_list"></div>
 
 <a href="movie-list.html">Return to MovieList</a>
 

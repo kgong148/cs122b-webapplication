@@ -39,6 +39,18 @@ public class MovieListServlet extends HttpServlet {
 
         response.setContentType("application/json"); // Response mime type
 
+        String title = request.getParameter("title");
+        String year = request.getParameter("year");
+        String director = request.getParameter("director");
+        String stars = request.getParameter("stars");
+
+        String conditions = "";
+
+        if(title != null) conditions += " AND m.title LIKE '%"+title+"%' ";
+        if(year != null) conditions += " AND m.year = " + year + " ";
+        if(director != null) conditions += " AND m.director LIKE '%" + director + "%' ";
+        if(stars != null) conditions += " AND s.name LIKE '%" + stars + "%' ";
+
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
@@ -49,7 +61,7 @@ public class MovieListServlet extends HttpServlet {
             // Declare our statement
             Statement statement = dbcon.createStatement();
 
-            String query = "SELECT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId) ORDER BY r.rating DESC LIMIT 20";
+            String query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ "ORDER BY r.rating DESC, m.title ASC LIMIT 10 OFFSET 0";
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
