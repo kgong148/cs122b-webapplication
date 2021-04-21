@@ -61,7 +61,7 @@ public class MovieListServlet extends HttpServlet {
             // Declare our statement
             Statement statement = dbcon.createStatement();
 
-            String query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ "ORDER BY r.rating DESC, m.title ASC LIMIT 10 OFFSET 0";
+            String query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ " ORDER BY r.rating DESC, m.title ASC LIMIT 10 OFFSET 0";
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);

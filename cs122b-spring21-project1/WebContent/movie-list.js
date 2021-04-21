@@ -106,11 +106,13 @@ if(searchStars != "" && searchStars != null)
     if(params.length != "") params += "&";
     params += "stars="+searchStars;
 }
+if(params.length > 0)
+    params = "?"+params;
 
 // Makes the HTTP GET request and registers on success callback function handleMovieResult
 jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
-    url: "api/movie-list?" + params, // Setting request url
+    url: "api/movie-list" + params, // Setting request url
     success: (resultData) => handleMovieResult(resultData) // Setting callback function to handle data returned successfully by the MovieListServlet
 });

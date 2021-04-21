@@ -11,7 +11,7 @@ function handleSearchResult(resultDataString) {
     console.log(resultDataJson);
     console.log(resultDataJson["status"]);
 
-    let url = "movie-list.html?";
+    let url = "";
 
     let title = resultDataJson["title"];
     let year = resultDataJson["year"];
@@ -34,6 +34,8 @@ function handleSearchResult(resultDataString) {
         if(url.length > 15) url += "&";
         url += "stars="+stars;
     }
+    if(url.length > 0) url = "movie-list.html?" + url;
+    else url = "movie-list.html";
 
     window.location.replace(url);
     // If search succeeds, it will redirect the user to main-page.html
