@@ -100,7 +100,7 @@ public class MovieListServlet extends HttpServlet {
                         "FROM movies m, genres_in_movies gim, genres g " +
                         "WHERE m.id = gim.movieId AND gim.genreId = g.id " +
                         "AND m.id =? "+
-                        "LIMIT 3";
+                        "ORDER BY g.name LIMIT 3";
 
                 PreparedStatement s1 = dbcon.prepareStatement(q1);
                 s1.setString(1, movie_id);
@@ -109,9 +109,14 @@ public class MovieListServlet extends HttpServlet {
                 ResultSet rs_t1 = s1.executeQuery();
 
                 String q2 = "SELECT DISTINCT s.name, s.id " +
-                        "FROM movies m, stars_in_movies sim, stars s " +
-                        "WHERE m.id = sim.movieId AND sim.starId = s.id " +
+                        "FROM movies m, stars_in_movies sim, stars s, " +
+                        "(SELECT id, COUNT(movieId) AS ma " +
+                        "FROM stars, stars_in_movies " +
+                        "WHERE starId = id " +
+                        "GROUP BY name) as MA " +
+                        "WHERE m.id = sim.movieId AND sim.starId = s.id AND MA.id = s.id " +
                         "AND m.id =? "+
+                        "ORDER BY MA.ma " +
                         "LIMIT 3";
 
                 PreparedStatement s2 = dbcon.prepareStatement(q2);

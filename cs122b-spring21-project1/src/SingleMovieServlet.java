@@ -51,7 +51,7 @@ public class SingleMovieServlet extends HttpServlet {
             String q_genres = "SELECT DISTINCT g.name " +
                     "FROM movies m, genres_in_movies gim, genres g " +
                     "WHERE m.id = gim.movieId AND gim.genreId = g.id " +
-                    "AND m.id =? ";
+                    "AND m.id =? ORDER BY g.name";
 
             PreparedStatement s1 = dbcon.prepareStatement(q_genres);
             s1.setString(1, id);
