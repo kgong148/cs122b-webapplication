@@ -59,7 +59,23 @@ public class SingleMovieServlet extends HttpServlet {
             ResultSet rs1 = s1.executeQuery();
 
             // Construct a query with parameter represented by "?"
-            String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m, ratings as r where s.id = sim.starId and sim.movieId = m.id and r.movieId = m.id and m.id = ?";
+            //String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m, ratings as r where s.id = sim.starId and sim.movieId = m.id and r.movieId = m.id and m.id = ?";
+            String query = "SELECT DISTINCT s.name, sim.movieId, m.title, m.year, m.director, " +
+                    "r.rating, sim.starId, MA.ma " +
+                    "from stars as s, stars_in_movies as sim, stars_in_movies as sim2, " +
+                    "movies as m, ratings as r, " +
+                    "(SELECT id, COUNT(movieId) AS ma " +
+                    "FROM stars, stars_in_movies " +
+                    "WHERE starId = id " +
+                    "GROUP BY name) as MA " +
+                    "where s.id = sim.starId " +
+                    "and sim.movieId = m.id " +
+                    "and r.movieId = m.id " +
+                    "and sim2.starId = s.id " +
+                    "and MA.id = s.id " +
+                    "and m.id = ? " +
+                    "ORDER BY MA.ma DESC, s.name ASC";
+
 
             // Declare our statement
             PreparedStatement statement = dbcon.prepareStatement(query);
