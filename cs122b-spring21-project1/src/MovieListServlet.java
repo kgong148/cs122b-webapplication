@@ -15,7 +15,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-
+import javax.servlet.http.HttpSession;
 
 // Declaring a WebServlet called StarsServlet, which maps to url "/api/stars"
 @WebServlet(name = "MovieListServlet", urlPatterns = "/api/movie-list")
@@ -37,6 +37,9 @@ public class MovieListServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        HttpSession session = request.getSession();
+        session.setAttribute("movieListURL", request.getContextPath()+"/movie-list.html?"+request.getQueryString());
+        System.out.println(request.getContextPath()+"/movie-list.html?"+request.getQueryString());
         response.setContentType("application/json"); // Response mime type
 
         String genre = request.getParameter("genre");
@@ -52,6 +55,8 @@ public class MovieListServlet extends HttpServlet {
         {
             if(genre != null)
                 conditions += " AND g.name LIKE '%" + genre + "%' ";
+            else if(startsWith.equals("*"))
+                conditions += " AND m.title REGEXP '^[^0-9A-Za-z]' ";
             else
                 conditions += " AND m.title LIKE '" + startsWith + "%' ";
         }

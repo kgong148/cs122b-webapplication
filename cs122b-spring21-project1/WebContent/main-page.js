@@ -94,6 +94,15 @@ function handleResult(resultData)
         // Append the row created to the table body, which will refresh the page
         genreListElement.append(rowHTML);
     }
+    let rowHTML = "";
+    rowHTML += "<li>";
+    rowHTML +=
+        '<li> <a href="movie-list.html?startsWith=' + "*" + '">'
+        + "*" +
+        '</a> </li>';
+
+    // Append the row created to the table body, which will refresh the page
+    genreListElement.append(rowHTML);
 }
 
 // Bind the submit action of the form to a handler function

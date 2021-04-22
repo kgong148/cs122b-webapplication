@@ -82,6 +82,8 @@ public class SingleMovieServlet extends HttpServlet {
             String movieYear = rs.getString("year");
             String movieDirector = rs.getString("director");
             String movieRating = rs.getString("rating");
+            String return_url = (String) request.getSession(true).getAttribute("movieListURL");
+            System.out.println(return_url);
             jsonObject_g.addProperty("movie_id", movieId);
             jsonObject_g.addProperty("movie_title", movieTitle);
             jsonObject_g.addProperty("movie_year", movieYear);
@@ -89,6 +91,8 @@ public class SingleMovieServlet extends HttpServlet {
             jsonObject_g.addProperty("movie_rating", movieRating);
             jsonObject_g.addProperty("star_id", rs.getString("starId"));
             jsonObject_g.addProperty("star_name", rs.getString("name"));
+            jsonObject_g.addProperty("return_url", return_url);
+
 
             rs1.next();
             String movie_genres = rs1.getString("name");

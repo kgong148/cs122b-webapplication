@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
-        boolean creditialsCorrect = false;
+        boolean credentialsCorrect = false;
         try {
             // Get a connection from dataSource
             Connection dbcon = dataSource.getConnection();
@@ -53,10 +53,10 @@ public class LoginServlet extends HttpServlet {
             s1.setString(2, password);
 
             ResultSet rs1 = s1.executeQuery();
-            if(rs1.next()) creditialsCorrect = true;
+            if(rs1.next()) credentialsCorrect = true;
 
             JsonObject responseJsonObject = new JsonObject();
-            if (creditialsCorrect) {
+            if (credentialsCorrect) {
                 // Login success:
 
                 // set this user into the session
