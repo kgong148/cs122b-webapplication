@@ -42,7 +42,7 @@ function handleMovieResult(resultData) {
 
     // Iterate through resultData, no more than 10 entries
 
-    for (let i = 0; i < Math.min(20, resultData.length); i++) {
+    for (let i = 0; i < resultData.length; i++) {
 
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
@@ -59,9 +59,9 @@ function handleMovieResult(resultData) {
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
 
         rowHTML += "<th>";
-        rowHTML += resultData[i]["movie_genre_0"];
-        if (resultData[i]["movie_genre_1"] != "") rowHTML += (", " + resultData[i]["movie_genre_1"]);
-        if (resultData[i]["movie_genre_2"] != "") rowHTML += (", " + resultData[i]["movie_genre_2"]);
+        rowHTML += '<a href="movie-list.html?genre=' + resultData[i]['movie_genre_0'] + '">' + resultData[i]['movie_genre_0'] +'</a>';
+        if (resultData[i]["movie_genre_1"] != "") rowHTML += '<a href="movie-list.html?genre=' + resultData[i]['movie_genre_1'] + '">' + (", " + resultData[i]["movie_genre_1"]) +'</a>';
+        if (resultData[i]["movie_genre_2"] != "") rowHTML += '<a href="movie-list.html?genre=' + resultData[i]['movie_genre_2'] + '">' + (", " + resultData[i]["movie_genre_2"]) +'</a>';
         rowHTML += "</th>";
 
         rowHTML += "<th>"
@@ -88,23 +88,35 @@ let searchTitle = getParameterByName('title');
 let searchYear = getParameterByName('year');
 let searchDirector = getParameterByName('director');
 let searchStars = getParameterByName('stars');
+let searchGenre = getParameterByName('genre');
+let searchStart = getParameterByName('startsWith');
 
 let params = "";
-if(searchTitle != "" && searchTitle != null) params += "title="+searchTitle;
-if(searchYear != "" && searchYear != null)
+if(searchGenre != null || searchStart != null)
 {
-    if(params.length != "") url += "&";
-    params += "year="+searchYear;
+    if(searchGenre != null)
+    {
+        params += "genre="+searchGenre;
+    }
+    else
+    {
+        params += "startsWith="+searchStart;
+    }
 }
-if(searchDirector != "" && searchDirector != null)
-{
-    if(params.length != "") params += "&";
-    params += "director="+searchDirector;
-}
-if(searchStars != "" && searchStars != null)
-{
-    if(params.length != "") params += "&";
-    params += "stars="+searchStars;
+else {
+    if (searchTitle != "" && searchTitle != null) params += "title=" + searchTitle;
+    if (searchYear != "" && searchYear != null) {
+        if (params.length != "") params += "&";
+        params += "year=" + searchYear;
+    }
+    if (searchDirector != "" && searchDirector != null) {
+        if (params.length != "") params += "&";
+        params += "director=" + searchDirector;
+    }
+    if (searchStars != "" && searchStars != null) {
+        if (params.length != "") params += "&";
+        params += "stars=" + searchStars;
+    }
 }
 if(params.length > 0)
     params = "?"+params;

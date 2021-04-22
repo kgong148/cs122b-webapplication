@@ -21,33 +21,23 @@ function handleSearchResult(resultDataString) {
     if(title != "") url += "title="+title;
     if(year != "")
     {
-        if(url.length > 15) url += "&";
+        if(url.length > 0) url += "&";
         url += "year="+year;
     }
     if(director != "")
     {
-        if(url.length > 15) url += "&";
+        if(url.length > 0) url += "&";
         url += "director="+director;
     }
     if(stars != "")
     {
-        if(url.length > 15) url += "&";
+        if(url.length > 0) url += "&";
         url += "stars="+stars;
     }
     if(url.length > 0) url = "movie-list.html?" + url;
     else url = "movie-list.html";
 
     window.location.replace(url);
-    // If search succeeds, it will redirect the user to main-page.html
-    // if (resultDataJson["status"] === "success") {
-    //     window.location.replace("main-page.html");
-    // } else {
-    //     // If login fails, the web page will display
-    //     // error messages on <div> with id "login_error_message"
-    //     console.log("show error message");
-    //     console.log(resultDataJson["message"]);
-    //     $("#login_error_message").text(resultDataJson["message"]);
-    // }
 }
 
 function submitSearchForm(formSubmitEvent) {
@@ -69,5 +59,49 @@ function submitSearchForm(formSubmitEvent) {
     );
 }
 
+function handleResult(resultData)
+{
+    console.log("handleResult: populating genre_list from resultData");
+
+    // Populate the star table
+    // Find the empty table body by id "star_table_body"
+    let genreListElement = jQuery("#genre_list");
+
+    // Concatenate the html tags with resultData jsonObject to create table rows
+    for (let i = 0; i < resultData["size"]; i++) {
+        let rowHTML = "";
+        rowHTML += "<li>";
+        rowHTML +=
+            '<li> <a href="movie-list.html?genre=' + resultData['genre_'+i] + '">'
+            + resultData["genre_"+i] +
+            '</a> </li>';
+
+        // Append the row created to the table body, which will refresh the page
+        genreListElement.append(rowHTML);
+    }
+
+    let titleListElement = jQuery("#title_list");
+
+    // Concatenate the html tags with resultData jsonObject to create table rows
+    for (let i = 0; i < 26; i++) {
+        let rowHTML = "";
+        rowHTML += "<li>";
+        rowHTML +=
+            '<li> <a href="movie-list.html?startsWith=' + String.fromCharCode(65+i) + '">'
+            + String.fromCharCode(65+i) +
+            '</a> </li>';
+
+        // Append the row created to the table body, which will refresh the page
+        genreListElement.append(rowHTML);
+    }
+}
+
 // Bind the submit action of the form to a handler function
 search_form.submit(submitSearchForm);
+
+jQuery.ajax({
+    dataType: "json",  // Setting return data type
+    method: "GET",// Setting request method
+    url: "api/main-page", // Setting request url, which is mapped by MovieListServlet
+    success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
+});

@@ -72,7 +72,7 @@ public class LoginServlet extends HttpServlet {
                 responseJsonObject.addProperty("message", "email or password is incorrect");
             }
             response.getWriter().write(responseJsonObject.toString());
-
+            dbcon.close();
         } catch (Exception e) {
             // write error message JSON object to output
             JsonObject jsonObject = new JsonObject();

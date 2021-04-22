@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Form Example</title>
+    <title>Main Page</title>
+    <style>
+        ul > li {
+            display: inline-block;
+            /* You can also add some margins here to make it look prettier */
+            zoom:1;
+            *display:inline;
+            padding:2pt;
+        }
+    </style>
 </head>
 
 <body BGCOLOR="#FDF5E6">
@@ -33,9 +42,12 @@
 </form>
 <h2>Browse</h2>
 <h3>Genres</h3>
-<div id="genre_list"></div>
 
-<a href="movie-list.html">Return to MovieList</a>
+<ul id="genre_list"></ul>
+
+<h3>Title</h3>
+
+<ul id="title_list"></ul>
 
 <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 <script src='main-page.js'></script>

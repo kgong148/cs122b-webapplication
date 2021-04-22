@@ -41,7 +41,7 @@ function handleResult(resultData) {
     console.log("handleResult: populating star info from resultData");
 
     // populate the star info h3
-    // find the empty h3 body by id "star_info"
+    // find the empty h3 body by id "movie_info"
     let movieInfoElement = jQuery("#movie_info");
 
     // append two html <p> created to the h3 body, which will refresh the page
@@ -61,7 +61,7 @@ function handleResult(resultData) {
     let starTableBodyElement = jQuery("#star_table_body");
 
     // Concatenate the html tags with resultData jsonObject to create table rows
-    for (let i = 0; i < Math.min(20, resultData.length); i++) {
+    for (let i = 0; i < resultData.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
         rowHTML +=

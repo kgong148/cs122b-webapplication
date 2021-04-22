@@ -39,6 +39,8 @@ public class MovieListServlet extends HttpServlet {
 
         response.setContentType("application/json"); // Response mime type
 
+        String genre = request.getParameter("genre");
+        String startsWith = request.getParameter("startsWith");
         String title = request.getParameter("title");
         String year = request.getParameter("year");
         String director = request.getParameter("director");
@@ -46,11 +48,19 @@ public class MovieListServlet extends HttpServlet {
 
         String conditions = "";
 
-        if(title != null) conditions += " AND m.title LIKE '%"+title+"%' ";
-        if(year != null) conditions += " AND m.year = " + year + " ";
-        if(director != null) conditions += " AND m.director LIKE '%" + director + "%' ";
-        if(stars != null) conditions += " AND s.name LIKE '%" + stars + "%' ";
-
+        if(genre != null || startsWith != null)
+        {
+            if(genre != null)
+                conditions += " AND g.name LIKE '%" + genre + "%' ";
+            else
+                conditions += " AND m.title LIKE '" + startsWith + "%' ";
+        }
+        else {
+            if (title != null) conditions += " AND m.title LIKE '%" + title + "%' ";
+            if (year != null) conditions += " AND m.year = " + year + " ";
+            if (director != null) conditions += " AND m.director LIKE '%" + director + "%' ";
+            if (stars != null) conditions += " AND s.name LIKE '%" + stars + "%' ";
+        }
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
@@ -61,7 +71,11 @@ public class MovieListServlet extends HttpServlet {
             // Declare our statement
             Statement statement = dbcon.createStatement();
 
-            String query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ " ORDER BY r.rating DESC, m.title ASC LIMIT 10 OFFSET 0";
+            String query = "";
+            if(genre != null)
+                query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s, genres_in_movies gim, genres g WHERE m.id = sim.movieID AND sim.starId = s.id AND gim.movieId = m.id AND g.id = gim.genreId" +conditions+ " ORDER BY r.rating DESC, m.title ASC LIMIT 10 OFFSET 0";
+            else
+                query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ " ORDER BY r.rating DESC, m.title ASC LIMIT 10 OFFSET 0";
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);

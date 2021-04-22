@@ -49,60 +49,46 @@ public class MainPageServlet extends HttpServlet {
         responseJsonObject.addProperty("director", director);
         responseJsonObject.addProperty("stars", stars);
 
-        response.getWriter().write(responseJsonObject.toString());
+        PrintWriter out = response.getWriter();
+
 
         // Output stream to STDOUT
-        //PrintWriter out = response.getWriter();
-
-        // Building page head with title
-        //out.println("<html><head><title>MovieDB: Found Records</title></head>");
-
-        // Building page body
-        //out.println("<body><h1>MovieDB: Found Records</h1>");
 
 
-//        try {
-//            // Create a new connection to database
-//            Connection dbCon = dataSource.getConnection();
-//
-//            // Declare a new statement
-//            Statement statement = dbCon.createStatement();
-//
-//            // Generate a SQL query
-//            String query = "SELECT * from movies m, stars_in_movies sim, stars s WHERE "
-//                         + "m.id = sim.movieId AND sim.starId = s.id "
-//                         + "AND m.title LIKE "+title;
-//            if(!year.isEmpty()) query += (" AND m.year = " + year);
-//            query += " AND m.director LIKE "+director + " AND s.name LIKE "+stars;
-//
-//            // Perform the query
-//            ResultSet rs = statement.executeQuery(query);
-//
-//            // Create a html <table>
-//            out.println("<table border>");
-//
-//            // Iterate through each row of rs and create a table row <tr>
-//            out.println("<tr><td>ID</td><td>Name</td></tr>");
-//            while (rs.next()) {
-//                String m_ID = rs.getString("ID");
-//                String m_Name = rs.getString("name");
-//                out.println(String.format("<tr><td>%s</td><td>%s</td></tr>", m_ID, m_Name));
-//            }
-//            out.println("</table>");
-//
-//
-//            // Close all structures
-//            rs.close();
-//            statement.close();
-//            dbCon.close();
-//
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//
-//            // Output Error Massage to html
-//            out.println(String.format("<html><head><title>MovieDB: Error</title></head>\n<body><p>SQL error in doGet: %s</p></body></html>", ex.getMessage()));
-//            return;
-//        }
-//        out.close();
+        try {
+            // Create a new connection to database
+            Connection dbCon = dataSource.getConnection();
+
+            // Declare a new statement
+            Statement statement = dbCon.createStatement();
+
+            // Generate a SQL query
+            String query = "SELECT g.name from genres g";
+
+            // Perform the query
+            ResultSet rs = statement.executeQuery(query);
+
+            int count = 0;
+            while(rs.next())
+            {
+                responseJsonObject.addProperty("genre_"+count++, rs.getString("name"));
+            }
+            responseJsonObject.addProperty("size", count);
+
+            out.write(responseJsonObject.toString());
+
+            // Close all structures
+            rs.close();
+            statement.close();
+            dbCon.close();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+            // Output Error Massage to html
+            out.println(String.format("<html><head><title>MovieDB: Error</title></head>\n<body><p>SQL error in doGet: %s</p></body></html>", ex.getMessage()));
+            return;
+        }
+        out.close();
     }
 }
