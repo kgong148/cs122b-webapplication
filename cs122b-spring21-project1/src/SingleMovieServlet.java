@@ -111,12 +111,18 @@ public class SingleMovieServlet extends HttpServlet {
 
 
             rs1.next();
-            String movie_genres = rs1.getString("name");
+            int i = 0;
             while(rs1.next())
             {
-                movie_genres += ", " + rs1.getString("name");
+                jsonObject_g.addProperty("movie_genres_"+ i++,rs1.getString("name"));
             }
-            jsonObject_g.addProperty("movie_genres",movie_genres);
+            jsonObject_g.addProperty("genre_size",i);
+//            String movie_genres = rs1.getString("name");
+//            while(rs1.next())
+//            {
+//                movie_genres += ", " + rs1.getString("name");
+//            }
+//            jsonObject_g.addProperty("movie_genres",movie_genres);
             jsonArray.add(jsonObject_g);
 
             // Iterate through each row of rs

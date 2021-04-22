@@ -44,11 +44,17 @@ function handleResult(resultData) {
     // find the empty h3 body by id "movie_info"
     let movieInfoElement = jQuery("#movie_info");
 
+    let genre_str = "<a href = movie-list.html?genre="+resultData[0]["movie_genres_0"] +"> " +resultData[0]["movie_genres_0"] +" </a>";
+    for(let i = 1; i < resultData[0]["genre_size"]; i++)
+    {
+        genre_str += ", <a href = movie-list.html?genre="+resultData[0]["movie_genres_"+i] +"> " +resultData[0]["movie_genres_"+i] +" </a>";
+    }
+
     // append two html <p> created to the h3 body, which will refresh the page
     movieInfoElement.append("<p>Movie title: " + resultData[0]["movie_title"] + "</p>" +
         "<p>Year: " + resultData[0]["movie_year"] + "</p>" +
         "<p>Director: " + resultData[0]["movie_director"] + "</p>"+
-        "<p>Genres: " + resultData[0]["movie_genres"] + "</p>"+
+        "<p>Genres: " + (resultData[0]["genre_size"] > 0 ? genre_str  : "N/A") + "</p>"+
         "<p>Rating: " + resultData[0]["movie_rating"] + "</p>"+
         '<a href='+resultData[0]["return_url"]+'>' + "Return to MovieList" + '</a>');
     console.log("handleResult: populating movie table from resultData");
