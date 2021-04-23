@@ -48,6 +48,13 @@ public class MovieListServlet extends HttpServlet {
         String year = request.getParameter("year");
         String director = request.getParameter("director");
         String stars = request.getParameter("stars");
+        String amount = request.getParameter("amount");
+        String order = request.getParameter("order");
+
+        if(amount == null) amount = "10";
+
+        if(order == null || order.equals("rating")) order = "r.rating DESC, m.title ASC";
+        else order = "m.title ASC, r.rating DESC";
 
         String conditions = "";
 
@@ -78,9 +85,9 @@ public class MovieListServlet extends HttpServlet {
 
             String query = "";
             if(genre != null)
-                query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s, genres_in_movies gim, genres g WHERE m.id = sim.movieID AND sim.starId = s.id AND gim.movieId = m.id AND g.id = gim.genreId" +conditions+ " ORDER BY r.rating DESC, m.title ASC LIMIT 10 OFFSET 0";
+                query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s, genres_in_movies gim, genres g WHERE m.id = sim.movieID AND sim.starId = s.id AND gim.movieId = m.id AND g.id = gim.genreId" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET 0";
             else
-                query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ " ORDER BY r.rating DESC, m.title ASC LIMIT 10 OFFSET 0";
+                query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET 0";
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -108,15 +115,21 @@ public class MovieListServlet extends HttpServlet {
                 // Perform the query
                 ResultSet rs_t1 = s1.executeQuery();
 
+//                String q2 = "SELECT DISTINCT s.name, s.id " +
+//                        "FROM movies m, stars_in_movies sim, stars s, " +
+//                        "(SELECT id, COUNT(movieId) AS ma " +
+//                        "FROM stars, stars_in_movies " +
+//                        "WHERE starId = id " +
+//                        "GROUP BY name) as MA " +
+//                        "WHERE m.id = sim.movieId AND sim.starId = s.id AND MA.id = s.id " +
+//                        "AND m.id =? "+
+//                        "ORDER BY MA.ma " +
+//                        "LIMIT 3";
+
                 String q2 = "SELECT DISTINCT s.name, s.id " +
-                        "FROM movies m, stars_in_movies sim, stars s, " +
-                        "(SELECT id, COUNT(movieId) AS ma " +
-                        "FROM stars, stars_in_movies " +
-                        "WHERE starId = id " +
-                        "GROUP BY name) as MA " +
-                        "WHERE m.id = sim.movieId AND sim.starId = s.id AND MA.id = s.id " +
+                        "FROM movies m, stars_in_movies sim, stars s " +
+                        "WHERE m.id = sim.movieId AND sim.starId = s.id " +
                         "AND m.id =? "+
-                        "ORDER BY MA.ma " +
                         "LIMIT 3";
 
                 PreparedStatement s2 = dbcon.prepareStatement(q2);

@@ -23,7 +23,26 @@
 
 
 <h1>movies</h1>
-
+<form form id="amount_form" method="get" action="#" style="float:left;">
+    <label for="amount_list">Number of movies per page:</label>
+    <select name="amount_list" id="amount_list">
+        <option value="ten">10</option>
+        <option value="twenty-five">25</option>
+        <option value="fifty">50</option>
+        <option value="one-hundred">100</option>
+    </select>
+    <input type="submit" value="Search">
+</form>
+<br>
+<form form id="order_form" method="get" action="#" style="float:right;">
+    <label for="order_list">Order By:</label>
+    <select name="order_list" id="order_list">
+        <option value="rating">rating, title</option>
+        <option value="title">title, rating</option>
+    </select>
+    <input type="submit" value="Search">
+</form>
+<br>
 <!-- Id "star_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
 <table id=movie_table class="table table-striped">
     <!-- Create a table header -->

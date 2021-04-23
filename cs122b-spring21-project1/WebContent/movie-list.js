@@ -8,6 +8,9 @@
  *      2. Populate the data to correct html elements.
  */
 
+let amount_form = $("#amount_form");
+let order_form = $("#order_form");
+
 /**
  * Retrieve parameter from request URL, matching by parameter name
  * @param target String
@@ -40,7 +43,7 @@ function handleMovieResult(resultData) {
     // Find the empty table body by id "star_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
 
-    // Iterate through resultData, no more than 10 entries
+    // Iterate through resultData
 
     for (let i = 0; i < resultData.length; i++) {
 
@@ -79,7 +82,6 @@ function handleMovieResult(resultData) {
     }
 }
 
-
 /**
  * Once this .js is loaded, following scripts will be executed by the browser
  */
@@ -90,6 +92,8 @@ let searchDirector = getParameterByName('director');
 let searchStars = getParameterByName('stars');
 let searchGenre = getParameterByName('genre');
 let searchStart = getParameterByName('startsWith');
+let searchAmount = getParameterByName('amount');
+let searchOrder = getParameterByName('order');
 
 let params = "";
 if(searchGenre != null || searchStart != null)
@@ -106,21 +110,85 @@ if(searchGenre != null || searchStart != null)
 else {
     if (searchTitle != "" && searchTitle != null) params += "title=" + searchTitle;
     if (searchYear != "" && searchYear != null) {
-        if (params.length != "") params += "&";
+        if (params.length > 0) params += "&";
         params += "year=" + searchYear;
     }
     if (searchDirector != "" && searchDirector != null) {
-        if (params.length != "") params += "&";
+        if (params.length > 0) params += "&";
         params += "director=" + searchDirector;
     }
     if (searchStars != "" && searchStars != null) {
-        if (params.length != "") params += "&";
+        if (params.length > 0) params += "&";
         params += "stars=" + searchStars;
     }
 }
+let amountBool = false;
+if (searchAmount != "" && searchAmount != null)
+{
+    amountBool = true;
+    if (params.length > 0) params += "&";
+    params += "amount=" + searchAmount;
+}
+
+let orderBool = false;
+if (searchOrder != "" && searchOrder != null)
+{
+    orderBool = true;
+    if (params.length > 0) params += "&";
+    params += "order=" + searchOrder;
+}
+
 if(params.length > 0)
     params = "?"+params;
 
+
+function submitAmountForm(formSubmitEvent)
+{
+    console.log("submit amount form");
+
+    formSubmitEvent.preventDefault();
+
+    let e = document.getElementById("amount_list");
+    let amount = e.options[e.selectedIndex].text;
+
+    console.log("Amount selected = " + amount);
+
+    let temp = params
+    if (!amountBool) {
+        temp = params + (params.length > 0 ? ("&amount=" + amount) : ("?amount=" + amount));
+    } else {
+        temp = temp.replace(/amount=[0-9]*/, "amount=" + amount);
+    }
+
+    window.location.replace("movie-list.html"+temp);
+}
+
+function submitOrderForm(formSubmitEvent)
+{
+    console.log("submit order form");
+
+    formSubmitEvent.preventDefault();
+
+    let e = document.getElementById("order_list");
+    let order = e.options[e.selectedIndex].text;
+
+    if(order == "rating, title") order = "rating";
+    else order = "title";
+
+    console.log("Order selected = " + order);
+
+    let temp = params
+    if (!orderBool) {
+        temp = params + (params.length > 0 ? ("&order=" + order) : ("?order=" + order));
+    } else {
+        temp = temp.replace(/order=[a-z]*/, "order=" + order);
+    }
+
+    window.location.replace("movie-list.html"+temp);
+}
+
+amount_form.submit(submitAmountForm);
+order_form.submit(submitOrderForm);
 // Makes the HTTP GET request and registers on success callback function handleMovieResult
 jQuery.ajax({
     dataType: "json", // Setting return data type
@@ -128,3 +196,4 @@ jQuery.ajax({
     url: "api/movie-list" + params, // Setting request url
     success: (resultData) => handleMovieResult(resultData) // Setting callback function to handle data returned successfully by the MovieListServlet
 });
+
