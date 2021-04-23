@@ -56,6 +56,7 @@ function handleResult(resultData) {
         "<p>Director: " + resultData[0]["movie_director"] + "</p>"+
         "<p>Genres: " + (resultData[0]["genre_size"] > 0 ? genre_str  : "N/A") + "</p>"+
         "<p>Rating: " + resultData[0]["movie_rating"] + "</p>"+
+        "<p>Price: $" + resultData[0]["movie_price"] + "</p>"+
         '<a href='+resultData[0]["return_url"]+'>' + "Return to MovieList" + '</a>');
     console.log("handleResult: populating movie table from resultData");
 
