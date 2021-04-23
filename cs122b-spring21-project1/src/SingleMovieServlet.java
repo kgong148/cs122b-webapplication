@@ -60,7 +60,7 @@ public class SingleMovieServlet extends HttpServlet {
 
             // Construct a query with parameter represented by "?"
             //String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m, ratings as r where s.id = sim.starId and sim.movieId = m.id and r.movieId = m.id and m.id = ?";
-            String query = "SELECT DISTINCT s.name, sim.movieId, m.title, m.year, m.director, " +
+            String query = "SELECT DISTINCT s.name, sim.movieId, m.title, m.year, m.director, m.price, " +
                     "r.rating, sim.starId, MA.ma " +
                     "from stars as s, stars_in_movies as sim, stars_in_movies as sim2, " +
                     "movies as m, ratings as r, " +
@@ -98,6 +98,8 @@ public class SingleMovieServlet extends HttpServlet {
             String movieYear = rs.getString("year");
             String movieDirector = rs.getString("director");
             String movieRating = rs.getString("rating");
+            String moviePrice = rs.getString("price");
+
             String return_url = (String) request.getSession(true).getAttribute("movieListURL");
             System.out.println(return_url);
             jsonObject_g.addProperty("movie_id", movieId);
@@ -105,6 +107,7 @@ public class SingleMovieServlet extends HttpServlet {
             jsonObject_g.addProperty("movie_year", movieYear);
             jsonObject_g.addProperty("movie_director", movieDirector);
             jsonObject_g.addProperty("movie_rating", movieRating);
+            jsonObject_g.addProperty("movie_price", moviePrice);
             jsonObject_g.addProperty("star_id", rs.getString("starId"));
             jsonObject_g.addProperty("star_name", rs.getString("name"));
             jsonObject_g.addProperty("return_url", return_url);
