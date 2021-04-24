@@ -48,10 +48,12 @@ public class MovieListServlet extends HttpServlet {
         String year = request.getParameter("year");
         String director = request.getParameter("director");
         String stars = request.getParameter("stars");
-        String amount = request.getParameter("amount");
+        String amount_s = request.getParameter("amount");
         String order = request.getParameter("order");
+        String page = request.getParameter("page");
 
-        if(amount == null) amount = "10";
+        if(page == null) page = "1";
+        if(amount_s == null) amount_s = "10";
 
         if(order == null || order.equals("rating")) order = "r.rating DESC, m.title ASC";
         else order = "m.title ASC, r.rating DESC";
@@ -73,6 +75,10 @@ public class MovieListServlet extends HttpServlet {
             if (director != null) conditions += " AND m.director LIKE '%" + director + "%' ";
             if (stars != null) conditions += " AND s.name LIKE '%" + stars + "%' ";
         }
+
+        int offset = (Integer.parseInt(page)-1)*Integer.parseInt(amount_s);
+        int amount = Integer.parseInt(amount_s)+1;
+
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
@@ -85,9 +91,9 @@ public class MovieListServlet extends HttpServlet {
 
             String query = "";
             if(genre != null)
-                query = "SELECT DISTINCT m.title, m.year, m.director, m.id, r.rating FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s, genres_in_movies gim, genres g WHERE m.id = sim.movieID AND sim.starId = s.id AND gim.movieId = m.id AND g.id = gim.genreId" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET 0";
+                query = "SELECT DISTINCT m.title, m.year, m.director, m.id, r.rating FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s, genres_in_movies gim, genres g WHERE m.id = sim.movieID AND sim.starId = s.id AND gim.movieId = m.id AND g.id = gim.genreId" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET "+offset;
             else
-                query = "SELECT DISTINCT m.title, m.year, m.director, m.id, r.rating FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET 0";
+                query = "SELECT DISTINCT m.title, m.year, m.director, m.id, r.rating FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET "+offset;
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -95,7 +101,10 @@ public class MovieListServlet extends HttpServlet {
             JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs
+            int count = 0;
             while (rs.next()) {
+                count++;
+
                 String movie_id = rs.getString("id");
                 //System.out.println(rs.getString("title"));
                 String movie_title = rs.getString("title");
@@ -160,10 +169,16 @@ public class MovieListServlet extends HttpServlet {
                         jsonObject.addProperty("movie_stars_id_" + i, "");
                     }
                 }
-
-
                 jsonArray.add(jsonObject);
+
+                if(count >= amount-1) break;
             }
+            JsonObject jsonObject = new JsonObject();
+            if(rs.next())
+                jsonObject.addProperty("EndOfQuery", false);
+            else
+                jsonObject.addProperty("EndOfQuery", true);
+            jsonArray.add(jsonObject);
 
             // write JSON string to output
             out.write(jsonArray.toString());

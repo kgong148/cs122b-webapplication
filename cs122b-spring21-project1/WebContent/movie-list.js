@@ -11,6 +11,8 @@
 let amount_form = $("#amount_form");
 let order_form = $("#order_form");
 
+let lastPage = false;
+
 /**
  * Retrieve parameter from request URL, matching by parameter name
  * @param target String
@@ -45,7 +47,7 @@ function handleMovieResult(resultData) {
 
     // Iterate through resultData
 
-    for (let i = 0; i < resultData.length; i++) {
+    for (let i = 0; i < resultData.length-1; i++) {
 
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
@@ -81,6 +83,7 @@ function handleMovieResult(resultData) {
         // Append the row created to the table body, which will refresh the page
         movieTableBodyElement.append(rowHTML);
     }
+    lastPage = resultData[resultData.length-1]["EndOfQuery"];
 }
 
 /**
@@ -95,6 +98,7 @@ let searchGenre = getParameterByName('genre');
 let searchStart = getParameterByName('startsWith');
 let searchAmount = getParameterByName('amount');
 let searchOrder = getParameterByName('order');
+let searchPage = getParameterByName('page');
 
 let params = "";
 if(searchGenre != null || searchStart != null)
@@ -139,6 +143,15 @@ if (searchOrder != "" && searchOrder != null)
     params += "order=" + searchOrder;
 }
 
+pageBool = false;
+if (searchPage != "" && searchPage != null)
+{
+    pageBool = true;
+    if (params.length > 0) params += "&";
+    params += "page=" + searchPage;
+}
+else {searchPage = "1";}
+
 if(params.length > 0)
     params = "?"+params;
 
@@ -160,6 +173,8 @@ function submitAmountForm(formSubmitEvent)
     } else {
         temp = temp.replace(/amount=[0-9]*/, "amount=" + amount);
     }
+
+    if(pageBool) temp = temp.replace(/page=[0-9]*/, "page=" + 1);
 
     window.location.replace("movie-list.html"+temp);
 }
@@ -185,11 +200,52 @@ function submitOrderForm(formSubmitEvent)
         temp = temp.replace(/order=[a-z]*/, "order=" + order);
     }
 
+    if(pageBool) temp = temp.replace(/page=[0-9]*/, "page=" + 1);
+
+    window.location.replace("movie-list.html"+temp);
+}
+
+function handlePrevButton ()
+{
+    console.log("prev button pressed");
+
+    let page = parseInt(searchPage);
+
+    if(page <= 1) return;
+    page -= 1;
+
+    let temp = params
+    if (!pageBool) {
+        temp = params + (params.length > 0 ? ("&page=" + page) : ("?page=" + page));
+    } else {
+        temp = temp.replace(/page=[0-9]*/, "page=" + page);
+    }
+
+    window.location.replace("movie-list.html"+temp);
+}
+
+function handleNextButton ()
+{
+    console.log("next button pressed");
+
+    let page = parseInt(searchPage);
+
+    if(lastPage) return;
+    page += 1;
+
+    let temp = params
+    if (!pageBool) {
+        temp = params + (params.length > 0 ? ("&page=" + page) : ("?page=" + page));
+    } else {
+        temp = temp.replace(/page=[0-9]*/, "page=" + page);
+    }
+
     window.location.replace("movie-list.html"+temp);
 }
 
 amount_form.submit(submitAmountForm);
 order_form.submit(submitOrderForm);
+
 // Makes the HTTP GET request and registers on success callback function handleMovieResult
 jQuery.ajax({
     dataType: "json", // Setting return data type
