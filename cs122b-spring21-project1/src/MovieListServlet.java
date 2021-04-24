@@ -115,22 +115,19 @@ public class MovieListServlet extends HttpServlet {
                 // Perform the query
                 ResultSet rs_t1 = s1.executeQuery();
 
-//                String q2 = "SELECT DISTINCT s.name, s.id " +
-//                        "FROM movies m, stars_in_movies sim, stars s, " +
-//                        "(SELECT id, COUNT(movieId) AS ma " +
-//                        "FROM stars, stars_in_movies " +
-//                        "WHERE starId = id " +
-//                        "GROUP BY name) as MA " +
-//                        "WHERE m.id = sim.movieId AND sim.starId = s.id AND MA.id = s.id " +
-//                        "AND m.id =? "+
-//                        "ORDER BY MA.ma " +
-//                        "LIMIT 3";
-
-                String q2 = "SELECT DISTINCT s.name, s.id " +
-                        "FROM movies m, stars_in_movies sim, stars s " +
-                        "WHERE m.id = sim.movieId AND sim.starId = s.id " +
-                        "AND m.id =? "+
+                String q2 = "SELECT DISTINCT sim1.starId, s.name " +
+                        "FROM stars_in_movies sim1, stars_in_movies sim2, movies m, stars s " +
+                        "WHERE m.id = sim1.movieId AND sim1.starId = sim2.starId AND sim1.starId = s.id " +
+                        "AND sim1.movieId = ? " +
+                        "GROUP BY sim1.starId " +
+                        "ORDER BY COUNT(sim2.movieId) DESC, s.name ASC " +
                         "LIMIT 3";
+
+//                String q2 = "SELECT DISTINCT s.name, s.id " +
+//                        "FROM movies m, stars_in_movies sim, stars s " +
+//                        "WHERE m.id = sim.movieId AND sim.starId = s.id " +
+//                        "AND m.id =? "+
+//                        "LIMIT 3";
 
                 PreparedStatement s2 = dbcon.prepareStatement(q2);
                 s2.setString(1, movie_id);
@@ -154,7 +151,7 @@ public class MovieListServlet extends HttpServlet {
                     if(rs_t2.next())
                     {
                         jsonObject.addProperty("movie_stars_" + i, rs_t2.getString("name"));
-                        jsonObject.addProperty("movie_stars_id_" + i, rs_t2.getString("id"));
+                        jsonObject.addProperty("movie_stars_id_" + i, rs_t2.getString("starId"));
                     }
                     else {
                         jsonObject.addProperty("movie_stars_" + i, "");
