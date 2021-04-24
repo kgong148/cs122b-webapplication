@@ -85,9 +85,9 @@ public class MovieListServlet extends HttpServlet {
 
             String query = "";
             if(genre != null)
-                query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s, genres_in_movies gim, genres g WHERE m.id = sim.movieID AND sim.starId = s.id AND gim.movieId = m.id AND g.id = gim.genreId" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET 0";
+                query = "SELECT DISTINCT m.title, m.year, m.director, m.id, r.rating FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s, genres_in_movies gim, genres g WHERE m.id = sim.movieID AND sim.starId = s.id AND gim.movieId = m.id AND g.id = gim.genreId" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET 0";
             else
-                query = "SELECT DISTINCT m.title, m.year, m.director, m.id FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET 0";
+                query = "SELECT DISTINCT m.title, m.year, m.director, m.id, r.rating FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET 0";
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -101,6 +101,7 @@ public class MovieListServlet extends HttpServlet {
                 String movie_title = rs.getString("title");
                 String movie_year = rs.getString("year");
                 String movie_director = rs.getString("director");
+                String movie_rating = rs.getString("rating");
 
                 //Add 3 genres and 3 stars
                 String q1 = "SELECT DISTINCT g.name " +
@@ -141,6 +142,7 @@ public class MovieListServlet extends HttpServlet {
                 jsonObject.addProperty("movie_title", movie_title);
                 jsonObject.addProperty("movie_year", movie_year);
                 jsonObject.addProperty("movie_director", movie_director);
+                jsonObject.addProperty("movie_rating", movie_rating);
 
                 for(int i = 0; i < 3; i++)
                 {

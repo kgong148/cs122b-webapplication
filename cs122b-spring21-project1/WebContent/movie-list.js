@@ -75,6 +75,7 @@ function handleMovieResult(resultData) {
         if(resultData[i]["movie_stars_2"] != "")
             rowHTML+= ", "+('<a href="single-star.html?id=' + resultData[i]['movie_stars_id_2'] + '">' + resultData[i]["movie_stars_2"] + '</a>');
         rowHTML+= "</th>";
+        rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
