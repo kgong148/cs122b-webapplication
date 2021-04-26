@@ -41,6 +41,7 @@ public class MainPageServlet extends HttpServlet {
         String year = request.getParameter("year");
         String director = request.getParameter("director");
         String stars = request.getParameter("stars");
+        String shopping_cart_url = (String) request.getSession(true).getAttribute("indexURL");
         //response.setContentType("text/html");    // Response mime type
 
         JsonObject responseJsonObject = new JsonObject();
@@ -48,6 +49,7 @@ public class MainPageServlet extends HttpServlet {
         responseJsonObject.addProperty("year", year);
         responseJsonObject.addProperty("director", director);
         responseJsonObject.addProperty("stars", stars);
+        responseJsonObject.addProperty("shopping_cart_url", shopping_cart_url);
 
         PrintWriter out = response.getWriter();
 

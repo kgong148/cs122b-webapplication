@@ -66,6 +66,12 @@ function handleResult(resultData)
     // Populate the star table
     // Find the empty table body by id "star_table_body"
     let genreListElement = jQuery("#genre_list");
+    // find the empty h3 body by id "shopping_cart"
+    let shoppingcartElement = jQuery("#shopping_cart");
+
+    shoppingcartElement.append(
+        '<p>Search <a href=' + resultData["shopping_cart_url"] + ' style=float:right;>Checkout</a></p>');
+
 
     // Concatenate the html tags with resultData jsonObject to create table rows
     for (let i = 0; i < resultData["size"]; i++) {
@@ -114,4 +120,10 @@ jQuery.ajax({
     url: "api/main-page", // Setting request url, which is mapped by MovieListServlet
     success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
 });
-
+/*
+jQuery.ajax({
+    dataType: "json",  // Setting return data type
+    method: "GET",// Setting request method
+    url: "api/index?", // Setting request url, which is mapped by indexServlet
+    success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
+});*/

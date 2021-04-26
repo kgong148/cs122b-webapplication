@@ -43,6 +43,9 @@ public class MovieListServlet extends HttpServlet {
         session.setAttribute("movieListURL", request.getContextPath()+"/movie-list.html?"+request.getQueryString());
         //System.out.println(request.getContextPath()+"/movie-list.html?"+request.getQueryString());
         response.setContentType("application/json"); // Response mime type
+        // Add shopping cart URL
+        String shopping_cart_url = (String) request.getSession(true).getAttribute("indexURL");
+
 
         String genre = request.getParameter("genre");
         String startsWith = request.getParameter("startsWith");
@@ -154,7 +157,8 @@ public class MovieListServlet extends HttpServlet {
                 jsonObject.addProperty("movie_year", movie_year);
                 jsonObject.addProperty("movie_director", movie_director);
                 jsonObject.addProperty("movie_rating", movie_rating);
-
+                // Add shopping cart URL to jsonObject
+                jsonObject.addProperty("shopping_cart_url", shopping_cart_url);
                 for(int i = 0; i < 3; i++)
                 {
                     if(rs_t1.next())

@@ -51,13 +51,14 @@ function handleResult(resultData) {
     }
 
     // append two html <p> created to the h3 body, which will refresh the page
-    movieInfoElement.append("<p>Movie title: " + resultData[0]["movie_title"] + "</p>" +
+    movieInfoElement.append("<p>Movie title: " + resultData[0]["movie_title"] +
+        '<a href=' + resultData[0]["shopping_cart_url"] + ' style=float:right;>Checkout</a></p>' +
         "<p>Year: " + resultData[0]["movie_year"] + "</p>" +
         "<p>Director: " + resultData[0]["movie_director"] + "</p>"+
         "<p>Genres: " + (resultData[0]["genre_size"] > 0 ? genre_str  : "N/A") + "</p>"+
         "<p>Rating: " + resultData[0]["movie_rating"] + "</p>"+
         "<p>Price: $" + resultData[0]["movie_price"] + "</p>"+
-        '<a href='+resultData[0]["return_url"]+'>' + "Return to MovieList" + '</a>');
+        '<a href='+resultData[0]["return_url"]+'>Return to MovieList</a>');
     console.log("handleResult: populating movie table from resultData");
 
 
@@ -90,11 +91,19 @@ function handleResult(resultData) {
 
 // Get id from URL
 let movieId = getParameterByName('id');
+let indexId = getParameterByName('id');
 
 // Makes the HTTP GET request and registers on success callback function handleResult
 jQuery.ajax({
+        dataType: "json",  // Setting return data type
+        method: "GET",// Setting request method
+    url: "api/single-movie?id=" + movieId, // Setting request url, which is mapped by MovieListServlet
+    success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
+});
+
+jQuery.ajax({
     dataType: "json",  // Setting return data type
     method: "GET",// Setting request method
-    url: "api/single-movie?id=" + movieId, // Setting request url, which is mapped by MovieListServlet
+    url: "api/index?", // Setting request url, which is mapped by indexServlet
     success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
 });

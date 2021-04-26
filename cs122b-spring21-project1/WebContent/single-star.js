@@ -45,7 +45,8 @@ function handleResult(resultData) {
     let starInfoElement = jQuery("#star_info");
 
     // append two html <p> created to the h3 body, which will refresh the page
-    starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] + "</p>" +
+    starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] +
+        '<a href=' + resultData[0]["shopping_cart_url"] + ' style=float:right;>Checkout</a></p>' +
         "<p>Date Of Birth: " + ((resultData[0]["star_dob"] == null) ? "N/A" : resultData[0]["star_dob"]) + "</p>" +
         '<a href='+resultData[0]["return_url"]+'>' + "Return to MovieList" + '</a>');
 
@@ -86,5 +87,12 @@ jQuery.ajax({
     dataType: "json",  // Setting return data type
     method: "GET",// Setting request method
     url: "api/single-star?id=" + starId, // Setting request url, which is mapped by StarsServlet in Stars.java
+    success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
+});
+
+jQuery.ajax({
+    dataType: "json",  // Setting return data type
+    method: "GET",// Setting request method
+    url: "api/index?", // Setting request url, which is mapped by indexServlet
     success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
 });
