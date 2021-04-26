@@ -22,7 +22,9 @@
 <body>
 
 
-<h1>movies</h1>
+<h1 id="shopping_cart"></h1>
+<!-- H3 body is left empty here, will be populated with the data retrieved with single-star.js -->
+<!-- single-star.js will find this html element by it's id "star_info" -->
 <form form id="amount_form" method="get" style="float:left;">
     <label for="amount_list">Number of movies per page:</label>
     <select name="amount_list" id="amount_list">
@@ -60,6 +62,7 @@
         <th>Genres</th>
         <th>Stars</th>
         <th>Ratings</th>
+        <th>AddToCart</th>
     </tr>
     </thead>
     <!-- Table body is left empty here, will be populated with the data retrieved with index.js -->

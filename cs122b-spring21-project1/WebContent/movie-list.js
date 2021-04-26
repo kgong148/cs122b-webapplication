@@ -41,6 +41,13 @@ function getParameterByName(target) {
 function handleMovieResult(resultData) {
     console.log("handleStarResult: populating star table from resultData");
 
+    // Add header and shopping cart link
+    let shoppingCartElement = jQuery('#shopping_cart');
+    shoppingCartElement.append('<h1>Movies<a href=' + resultData[0]["shopping_cart_url"] + ' style=float:right;>Checkout</a></h1>');
+
+    // find the empty h3 body by id "movie_info"
+    let movieInfoElement = jQuery("#movie_info");
+
     // Populate the star table
     // Find the empty table body by id "star_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
@@ -78,6 +85,7 @@ function handleMovieResult(resultData) {
             rowHTML+= ", "+('<a href="single-star.html?id=' + resultData[i]['movie_stars_id_2'] + '">' + resultData[i]["movie_stars_2"] + '</a>');
         rowHTML+= "</th>";
         rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
+        rowHTML += "<th> <input type=\"submit\" VALUE=\"add\"></th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
@@ -254,3 +262,9 @@ jQuery.ajax({
     success: (resultData) => handleMovieResult(resultData) // Setting callback function to handle data returned successfully by the MovieListServlet
 });
 
+jQuery.ajax({
+    dataType: "json",  // Setting return data type
+    method: "GET",// Setting request method
+    url: "api/index?", // Setting request url, which is mapped by indexServlet
+    success: (resultData) => handleMovieResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
+});
