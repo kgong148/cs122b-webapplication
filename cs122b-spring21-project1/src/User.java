@@ -5,9 +5,10 @@
 public class User {
 
     private final String username;
-
-    public User(String username) {
+    public final String userId;
+    public User(String username, String userId) {
         this.username = username;
+        this.userId = userId;
     }
 
 }

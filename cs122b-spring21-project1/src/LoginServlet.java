@@ -53,14 +53,18 @@ public class LoginServlet extends HttpServlet {
             s1.setString(2, password);
 
             ResultSet rs1 = s1.executeQuery();
-            if(rs1.next()) credentialsCorrect = true;
+            String userId = "";
+            if(rs1.next()) {
+                credentialsCorrect = true;
+                userId = rs1.getString("id");
+            }
 
             JsonObject responseJsonObject = new JsonObject();
             if (credentialsCorrect) {
                 // Login success:
 
                 // set this user into the session
-                request.getSession().setAttribute("user", new User(username));
+                request.getSession().setAttribute("user", new User(username, userId));
 
                 responseJsonObject.addProperty("status", "success");
                 responseJsonObject.addProperty("message", "success");

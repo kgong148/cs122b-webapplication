@@ -107,6 +107,10 @@ function handleCartRemoveButton(movieId)
     );
 }
 
+function handlePaymentButton()
+{
+    window.location.replace("payment-page.html");
+}
 // Makes the HTTP GET request and registers on success callback function handleMovieResult
 jQuery.ajax({
     dataType: "json", // Setting return data type

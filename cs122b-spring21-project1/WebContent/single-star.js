@@ -37,7 +37,8 @@ function getParameterByName(target) {
  */
 
 function handleResult(resultData) {
-
+    let checkoutButtonElement = jQuery("#checkout-button");
+    checkoutButtonElement.append('<input type="button" value="+" onclick="handleSingleAddButton(\''+resultData[0]["movie_id"]+'\')">');
     console.log("handleResult: populating star info from resultData");
 
     // populate the star info h3
@@ -46,7 +47,6 @@ function handleResult(resultData) {
 
     // append two html <p> created to the h3 body, which will refresh the page
     starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] +
-        '<a href=' + resultData[0]["shopping_cart_url"] + ' style=float:right;>Checkout</a></p>' +
         "<p>Date Of Birth: " + ((resultData[0]["star_dob"] == null) ? "N/A" : resultData[0]["star_dob"]) + "</p>" +
         '<a href='+resultData[0]["return_url"]+'>' + "Return to MovieList" + '</a>');
 
