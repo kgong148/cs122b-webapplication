@@ -37,6 +37,8 @@ function getParameterByName(target) {
  */
 
 function handleResult(resultData) {
+    let checkoutButtonElement = jQuery("#checkout-button");
+    checkoutButtonElement.append('<input type="button" value="+" onclick="handleSingleAddButton(\''+resultData[0]["movie_id"]+'\')">');
 
     console.log("handleResult: populating star info from resultData");
 
@@ -52,7 +54,6 @@ function handleResult(resultData) {
 
     // append two html <p> created to the h3 body, which will refresh the page
     movieInfoElement.append("<p>Movie title: " + resultData[0]["movie_title"] +
-        '<a href=' + resultData[0]["shopping_cart_url"] + ' style=float:right;>Checkout</a></p>' +
         "<p>Year: " + resultData[0]["movie_year"] + "</p>" +
         "<p>Director: " + resultData[0]["movie_director"] + "</p>"+
         "<p>Genres: " + (resultData[0]["genre_size"] > 0 ? genre_str  : "N/A") + "</p>"+
@@ -83,6 +84,22 @@ function handleResult(resultData) {
         starTableBodyElement.append(rowHTML);
     }
 
+}
+
+function handleSingleAddButton(movieId)
+{
+    $.ajax(
+        "api/movie-list", {
+            method: "POST",
+            data: "movieId="+encodeURIComponent(movieId),
+            success: handleSingleAddResult("Success!")
+        }
+    );
+}
+
+function handleSingleAddResult(text)
+{
+    $("#single_add_message").text(text);
 }
 
 /**
