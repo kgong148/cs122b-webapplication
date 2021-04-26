@@ -38,7 +38,8 @@ function getParameterByName(target) {
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
  */
-function handleMovieResult(resultData) {
+function handleMovieResult(resultData)
+{
     console.log("handleStarResult: populating star table from resultData");
 
     // Populate the star table
@@ -78,12 +79,31 @@ function handleMovieResult(resultData) {
             rowHTML+= ", "+('<a href="single-star.html?id=' + resultData[i]['movie_stars_id_2'] + '">' + resultData[i]["movie_stars_2"] + '</a>');
         rowHTML+= "</th>";
         rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
+        rowHTML += "<th>";
+        rowHTML += '<input type="button" value="+" onclick="handleAddButton(\''+resultData[i]["movie_id"]+'\')">';
+        rowHTML += "<th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
         movieTableBodyElement.append(rowHTML);
     }
     lastPage = resultData[resultData.length-1]["EndOfQuery"];
+}
+
+function handleAddButton(movieId)
+{
+    $.ajax(
+        "api/movie-list", {
+            method: "POST",
+            data: "movieId="+encodeURIComponent(movieId),
+            success: handleAddResult("Success!")
+        }
+    );
+}
+
+function handleAddResult(text)
+{
+    $("#add_message").text(text);
 }
 
 /**

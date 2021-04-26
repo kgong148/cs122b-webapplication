@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Hashtable;
 import javax.servlet.http.HttpSession;
 
 // Declaring a WebServlet called StarsServlet, which maps to url "/api/stars"
@@ -35,11 +36,12 @@ public class MovieListServlet extends HttpServlet {
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
 
         HttpSession session = request.getSession();
         session.setAttribute("movieListURL", request.getContextPath()+"/movie-list.html?"+request.getQueryString());
-        System.out.println(request.getContextPath()+"/movie-list.html?"+request.getQueryString());
+        //System.out.println(request.getContextPath()+"/movie-list.html?"+request.getQueryString());
         response.setContentType("application/json"); // Response mime type
 
         String genre = request.getParameter("genre");
@@ -199,6 +201,36 @@ public class MovieListServlet extends HttpServlet {
             response.setStatus(500);
         } finally {
             out.close();
+        }
+    }
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        String movieId = request.getParameter("movieId");
+        System.out.println(movieId);
+        HttpSession session = request.getSession();
+
+        // Retrieve data named "previousItems" from session
+        Hashtable<String, Integer> cartItems = (Hashtable<String, Integer>) session.getAttribute("cartItems");
+
+        // If "previousItems" is not found on session, means this is a new user, thus we create a new previousItems
+        // ArrayList for the user
+        if (cartItems == null) {
+
+            // Add the newly created ArrayList to session, so that it could be retrieved next time
+            cartItems = new Hashtable<>();
+            session.setAttribute("cartItems", cartItems);
+        }
+
+        synchronized (cartItems) {
+            if (movieId != null) {
+                if(cartItems.containsKey(movieId)) cartItems.put(movieId, cartItems.get(movieId)+1);
+                else cartItems.put(movieId, 1);
+                System.out.println(cartItems.get(movieId));
+            }
         }
     }
 }
