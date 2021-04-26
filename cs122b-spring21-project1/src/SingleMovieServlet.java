@@ -101,7 +101,8 @@ public class SingleMovieServlet extends HttpServlet {
             String moviePrice = rs.getString("price");
 
             String return_url = (String) request.getSession(true).getAttribute("movieListURL");
-            System.out.println(return_url);
+            String shopping_cart_url = (String) request.getSession(true).getAttribute("indexURL");
+            System.out.println(shopping_cart_url);
             jsonObject_g.addProperty("movie_id", movieId);
             jsonObject_g.addProperty("movie_title", movieTitle);
             jsonObject_g.addProperty("movie_year", movieYear);
@@ -111,6 +112,7 @@ public class SingleMovieServlet extends HttpServlet {
             jsonObject_g.addProperty("star_id", rs.getString("starId"));
             jsonObject_g.addProperty("star_name", rs.getString("name"));
             jsonObject_g.addProperty("return_url", return_url);
+            jsonObject_g.addProperty("shopping_cart_url", shopping_cart_url);
 
 
             rs1.next();

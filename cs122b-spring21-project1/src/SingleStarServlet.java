@@ -71,6 +71,7 @@ public class SingleStarServlet extends HttpServlet {
 				String starName = rs.getString("name");
 				String starDob = rs.getString("birthYear");
 				String return_url = (String) request.getSession(true).getAttribute("movieListURL");
+				String shopping_cart_url = (String) request.getSession(true).getAttribute("indexURL");
 
 				String movieId = rs.getString("movieId");
 				String movieTitle = rs.getString("title");
@@ -88,6 +89,8 @@ public class SingleStarServlet extends HttpServlet {
 				jsonObject.addProperty("movie_title", movieTitle);
 				jsonObject.addProperty("movie_year", movieYear);
 				jsonObject.addProperty("movie_director", movieDirector);
+				jsonObject.addProperty("shopping_cart_url", shopping_cart_url);
+
 
 				jsonArray.add(jsonObject);
 			}
