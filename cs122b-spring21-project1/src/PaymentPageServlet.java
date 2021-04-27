@@ -134,7 +134,12 @@ public class PaymentPageServlet extends HttpServlet {
                 // Login success:
                 HttpSession session = request.getSession(true);
                 Hashtable<String, Integer> cartItems = (Hashtable<String, Integer>) session.getAttribute("cartItems");
+                if (cartItems == null) {
 
+                    // Add the newly created ArrayList to session, so that it could be retrieved next time
+                    cartItems = new Hashtable<>();
+                    session.setAttribute("cartItems", cartItems);
+                }
                 for(Map.Entry<String, Integer> entry : cartItems.entrySet())
                 {
                     String id = entry.getKey();
@@ -151,6 +156,9 @@ public class PaymentPageServlet extends HttpServlet {
                         s1.executeUpdate();
                     }
                 }
+
+                cartItems = new Hashtable<>();
+                session.setAttribute("cartItems", cartItems);
                 responseJsonObject.addProperty("status", "success");
                 responseJsonObject.addProperty("message", "success");
 
