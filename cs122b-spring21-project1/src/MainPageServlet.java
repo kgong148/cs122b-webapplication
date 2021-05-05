@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -61,14 +62,14 @@ public class MainPageServlet extends HttpServlet {
             // Create a new connection to database
             Connection dbCon = dataSource.getConnection();
 
-            // Declare a new statement
-            Statement statement = dbCon.createStatement();
-
             // Generate a SQL query
             String query = "SELECT g.name from genres g";
 
+            // Declare a new statement
+            PreparedStatement statement = dbCon.prepareStatement(query);
+
             // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = statement.executeQuery();
 
             int count = 0;
             while(rs.next())

@@ -91,17 +91,21 @@ public class MovieListServlet extends HttpServlet {
             // Get a connection from dataSource
             Connection dbcon = dataSource.getConnection();
 
-            // Declare our statement
-            Statement statement = dbcon.createStatement();
-
             String query = "";
-            if(genre != null)
-                query = "SELECT DISTINCT m.title, m.year, m.director, m.id, r.rating FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s, genres_in_movies gim, genres g WHERE m.id = sim.movieID AND sim.starId = s.id AND gim.movieId = m.id AND g.id = gim.genreId" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET "+offset;
-            else
-                query = "SELECT DISTINCT m.title, m.year, m.director, m.id, r.rating FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id" +conditions+ " ORDER BY "+order+" LIMIT "+amount+" OFFSET "+offset;
+            if(genre != null) {
+                query = "SELECT DISTINCT m.title, m.year, m.director, m.id, r.rating FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s, genres_in_movies gim, genres g WHERE m.id = sim.movieID AND sim.starId = s.id AND gim.movieId = m.id AND g.id = gim.genreId"+conditions+" ORDER BY "+order+" LIMIT ? OFFSET ?";
+            }
+            else {
+                query = "SELECT DISTINCT m.title, m.year, m.director, m.id, r.rating FROM movies m JOIN (ratings r) ON (m.id =r.movieId), stars_in_movies sim, stars s WHERE m.id = sim.movieID AND sim.starId = s.id"+conditions+" ORDER BY "+order+" LIMIT ? OFFSET ?";
+            }
+            // Declare our statement
+            PreparedStatement statement = dbcon.prepareStatement(query);
+
+            statement.setInt(1, amount);
+            statement.setInt(2, offset);
 
             // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = statement.executeQuery();
 
             JsonArray jsonArray = new JsonArray();
 

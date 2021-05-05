@@ -48,17 +48,19 @@ public class ShoppingCartServlet extends HttpServlet {
             // Get a connection from dataSource
             Connection dbcon = dataSource.getConnection();
 
-            // Declare our statement
-            Statement statement = dbcon.createStatement();
             JsonArray jsonArray = new JsonArray();
             for(Map.Entry<String, Integer> entry : cartItems.entrySet())
             {
                 String id = entry.getKey();
                 Integer qty = entry.getValue();
-                String query = "SELECT m.id, m.title, m.price FROM movies m WHERE m.id = '" + id+"'";
+                String query = "SELECT m.id, m.title, m.price FROM movies m WHERE m.id = /'?/'";
+
+                // Declare our statement
+                PreparedStatement statement = dbcon.prepareStatement(query);
+                statement.setString(1,id);
 
                 // Perform the query
-                ResultSet rs = statement.executeQuery(query);
+                ResultSet rs = statement.executeQuery();
 
                 String title = "";
                 String price = "";
@@ -76,6 +78,7 @@ public class ShoppingCartServlet extends HttpServlet {
 
                 jsonArray.add(jsonObject);
                 rs.close();
+                statement.close();
             }
 
 
@@ -83,9 +86,6 @@ public class ShoppingCartServlet extends HttpServlet {
             out.write(jsonArray.toString());
             // set response status to 200 (OK)
             response.setStatus(200);
-
-
-            statement.close();
             dbcon.close();
         } catch (Exception e) {
 
