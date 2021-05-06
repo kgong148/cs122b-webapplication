@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
@@ -62,17 +63,19 @@ public class LoginServlet extends HttpServlet {
             Connection dbcon = dataSource.getConnection();
             String q_genres = "SELECT * " +
                     "FROM customers c " +
-                    "WHERE c.email = ?" + " AND c.password = ?";
+                    "WHERE c.email = ?";
 
             PreparedStatement s1 = dbcon.prepareStatement(q_genres);
             s1.setString(1, username);
-            s1.setString(2, password);
 
             ResultSet rs1 = s1.executeQuery();
             String userId = "";
             if(rs1.next()) {
-                credentialsCorrect = true;
+                //credentialsCorrect = true;
                 userId = rs1.getString("id");
+                String encryptedPassword = rs1.getString("password");
+                credentialsCorrect = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
+
             }
 
             JsonObject responseJsonObject = new JsonObject();
