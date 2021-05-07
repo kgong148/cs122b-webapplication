@@ -1,0 +1,42 @@
+<!-- This page will be redirected from any url if you are not logged in -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fablix Dashboard</title>
+</head>
+<body id="dashboard_body">
+<h1>Fablix Dashboard</h1>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<!-- Set the method to POST to avoid showing the username/password in the URL
+     The default action is disabled to allow your own implementation. -->
+
+
+<h2>Insert Star</h2>
+<form id="star_insert_form" method="get">
+    <label><b>Name</b></label>
+    <label>
+        <input name="name" placeholder="Name" type="text" required>
+    </label>
+    <br>
+    <label><b>Birth Year</b></label>
+    <label>
+        <input name="year" placeholder="Year" type="text">
+    </label>
+    <br>
+    <input type="submit" value="Insert">
+</form>
+<div id="insert_star_message"></div>
+
+
+<!-- include jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!-- include our own JS file -->
+<script src="./_dashboard.js"></script>
+
+</body>
+</html>

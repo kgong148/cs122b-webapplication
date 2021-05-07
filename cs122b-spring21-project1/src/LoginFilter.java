@@ -11,6 +11,7 @@ import java.util.ArrayList;
 @WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
 public class LoginFilter implements Filter {
     private final ArrayList<String> allowedURIs = new ArrayList<>();
+    private final ArrayList<String> employeeURIs = new ArrayList<>();
 
     /**
      * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
@@ -29,8 +30,14 @@ public class LoginFilter implements Filter {
             return;
         }
 
+        if(isEmployeeOnly(httpRequest.getRequestURI())) {
+            if (httpRequest.getSession().getAttribute("employee") == null)
+                httpResponse.sendRedirect("_dashboard-login.html");
+            else
+                chain.doFilter(request, response);
+        }
         // Redirect to login page if the "user" attribute doesn't exist in session
-        if (httpRequest.getSession().getAttribute("user") == null) {
+        else if (httpRequest.getSession().getAttribute("user") == null) {
             httpResponse.sendRedirect("login.html");
         } else {
             chain.doFilter(request, response);
@@ -43,13 +50,25 @@ public class LoginFilter implements Filter {
          Always allow your own login related requests(html, js, servlet, etc..)
          You might also want to allow some CSS files, etc..
          */
+
         return allowedURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
+    }
+
+    private boolean isEmployeeOnly(String requestURI)
+    {
+        return employeeURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
     }
 
     public void init(FilterConfig fConfig) {
         allowedURIs.add("login.html");
         allowedURIs.add("login.js");
         allowedURIs.add("api/login");
+        allowedURIs.add("_dashboard-login.html");
+        allowedURIs.add("_dashboard-login.js");
+        allowedURIs.add("api/_dashboard-login");
+        employeeURIs.add("_dashboard.html");
+        employeeURIs.add("_dashboard.js");
+        employeeURIs.add("api/_dashboard");
     }
 
     public void destroy() {

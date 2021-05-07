@@ -1,4 +1,5 @@
 import com.google.gson.JsonObject;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -13,11 +14,9 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 
-@WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
-public class LoginServlet extends HttpServlet {
-
+@WebServlet(name = "DashboardLoginServlet", urlPatterns = "/api/_dashboard-login")
+public class DashboardLoginServlet extends HttpServlet {
     private DataSource dataSource;
 
     public void init(ServletConfig config) {
@@ -62,20 +61,17 @@ public class LoginServlet extends HttpServlet {
             // Get a connection from dataSource
             Connection dbcon = dataSource.getConnection();
             String q_genres = "SELECT * " +
-                    "FROM customers c " +
-                    "WHERE c.email = ?";
+                    "FROM employees e " +
+                    "WHERE e.email = ?";
 
             PreparedStatement s1 = dbcon.prepareStatement(q_genres);
             s1.setString(1, username);
 
             ResultSet rs1 = s1.executeQuery();
-            String userId = "";
-            if(rs1.next()) {
-                //credentialsCorrect = true;
-                userId = rs1.getString("id");
+            if (rs1.next()) {
                 String encryptedPassword = rs1.getString("password");
-                credentialsCorrect = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
-
+                //credentialsCorrect = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
+                credentialsCorrect = (password.equals(encryptedPassword));
             }
 
             JsonObject responseJsonObject = new JsonObject();
@@ -83,7 +79,7 @@ public class LoginServlet extends HttpServlet {
                 // Login success:
 
                 // set this user into the session
-                request.getSession().setAttribute("user", new User(username, userId));
+                request.getSession().setAttribute("employee", new Employee(username));
 
                 responseJsonObject.addProperty("status", "success");
                 responseJsonObject.addProperty("message", "success");
@@ -96,6 +92,7 @@ public class LoginServlet extends HttpServlet {
             }
             response.getWriter().write(responseJsonObject.toString());
             dbcon.close();
+            s1.close();
         } catch (Exception e) {
             // write error message JSON object to output
             JsonObject jsonObject = new JsonObject();
