@@ -1,5 +1,5 @@
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -31,6 +31,58 @@ public class DashboardServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        PrintWriter out = response.getWriter();
+
+        try {
+            Connection dbcon = dataSource.getConnection();
+            JsonArray jsonArray = new JsonArray();
+
+            String tables_query = "SHOW tables";
+
+            PreparedStatement s1 = dbcon.prepareStatement(tables_query);
+            ResultSet rs1 = s1.executeQuery();
+            while(rs1.next())
+            {
+                String tablename = rs1.getString("Tables_in_moviedb");
+                String attribute_query = "DESCRIBE "+tablename;
+                PreparedStatement s2 = dbcon.prepareStatement(attribute_query);
+
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("tablename", tablename);
+
+                ResultSet rs2 = s2.executeQuery();
+                int count = 0;
+                while(rs2.next())
+                {
+                    jsonObject.addProperty("table_attribute_name_"+count, rs2.getString("Field"));
+                    jsonObject.addProperty("table_attribute_type_"+count++, rs2.getString("Type"));
+                }
+                jsonObject.addProperty("length", count);
+                jsonArray.add(jsonObject);
+                s2.close();
+            }
+            out.write(jsonArray.toString());
+            s1.close();
+            dbcon.close();
+
+        } catch (Exception e) {
+            // write error message JSON object to output
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("errorMessage", e.getMessage());
+            out.write(jsonObject.toString());
+
+            // set response status to 500 (Internal Server Error)
+            response.setStatus(500);
+        } finally {
+            out.close();
+        }
+    }
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         String name = request.getParameter("name");
         String year = request.getParameter("year");

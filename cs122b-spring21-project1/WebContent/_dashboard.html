@@ -2,7 +2,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Required meta tags -->
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Fablix Dashboard</title>
 </head>
 <body id="dashboard_body">
@@ -13,7 +20,7 @@
 
 
 <h2>Insert Star</h2>
-<form id="star_insert_form" method="get">
+<form id="star_insert_form" method="post">
     <label><b>Name</b></label>
     <label>
         <input name="name" placeholder="Name" type="text" required>
@@ -27,6 +34,7 @@
     <input type="submit" value="Insert">
 </form>
 <div id="insert_star_message"></div>
+<br>
 
 
 <!-- include jQuery-->
