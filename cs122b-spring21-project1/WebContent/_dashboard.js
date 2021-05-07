@@ -1,4 +1,5 @@
 let i_star_form = $("#star_insert_form")
+let i_movie_form = $("#movie_insert_form")
 
 function submitStarInsertForm(formSubmitEvent)
 {
@@ -68,8 +69,49 @@ function handleMetadataResult(resultData)
     dashboard_body.append(rowHTML);
 }
 
+function submitMovieInsertForm(formSubmitEvent)
+{
+    console.log("submit movie insert form");
+    /**
+     * When users click the submit button, the browser will not direct
+     * users to the url defined in HTML form. Instead, it will call this
+     * event handler when the event is triggered.
+     */
+    formSubmitEvent.preventDefault();
+
+    $.ajax(
+        "api/_dashboard", {
+            method: "POST",
+            // Serialize the login form to the data sent by POST request
+            data: i_movie_form.serialize(),
+            success: handleMovieResult
+        }
+    );
+}
+
+function handleMovieResult(resultDataString)
+{
+    let resultDataJson = JSON.parse(resultDataString);
+
+    console.log("handle insert movie response");
+    console.log(resultDataJson);
+    console.log(resultDataJson["status"]);
+
+    // If login succeeds, it will redirect the user to main-page.html
+    if (resultDataJson["status"] === "success") {
+        $("#insert_movie_message").text(resultDataJson["message"]);
+    } else {
+        // If login fails, the web page will display
+        // error messages on <div> with id "login_error_message"
+        console.log("show error message");
+        console.log(resultDataJson["message"]);
+        $("#insert_movie_message").text(resultDataJson["message"]);
+    }
+}
+
 // Bind the submit action of the form to a handler function
 i_star_form.submit(submitStarInsertForm);
+i_movie_form.submit(submitMovieInsertForm);
 
 // Makes the HTTP GET request and registers on success callback function handleMetadataResult
 jQuery.ajax({

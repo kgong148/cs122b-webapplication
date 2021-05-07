@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -84,10 +85,51 @@ public class DashboardServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        PrintWriter out = response.getWriter();
+        if(request.getParameter("director") != null)
+        {
+            String title = request.getParameter("title");
+            String year = request.getParameter("year");
+            String director = request.getParameter("director");
+            String price = request.getParameter("price");
+            String star_name = request.getParameter("star_name");
+            String genre_name = request.getParameter("genre_name");
+
+            try {
+                Connection dbcon = dataSource.getConnection();
+                String query = "{CALL add_movie(?,?,?,?,?,?)}";
+
+                CallableStatement s1 = dbcon.prepareCall(query);
+                s1.setString(1, title);
+                s1.setString(2, year);
+                s1.setString(3, director);
+                s1.setString(4, price);
+                s1.setString(5, star_name);
+                s1.setString(6, genre_name);
+                s1.executeQuery();
+                s1.close();
+
+                JsonObject responseJsonObject = new JsonObject();
+                responseJsonObject.addProperty("status", "success");
+                responseJsonObject.addProperty("message", ""+title+" successfully added");
+                response.getWriter().write(responseJsonObject.toString());
+
+                dbcon.close();
+            } catch (Exception e) {
+                // write error message JSON object to output
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("errorMessage", e.getMessage());
+                out.write(jsonObject.toString());
+
+                // set response status to 500 (Internal Server Error)
+                response.setStatus(500);
+            } finally {
+                out.close();
+            }
+        }
+
         String name = request.getParameter("name");
         String year = request.getParameter("year");
-
-        PrintWriter out = response.getWriter();
 
         try {
             Connection dbcon = dataSource.getConnection();
