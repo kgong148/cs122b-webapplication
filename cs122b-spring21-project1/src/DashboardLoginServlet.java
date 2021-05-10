@@ -70,8 +70,8 @@ public class DashboardLoginServlet extends HttpServlet {
             ResultSet rs1 = s1.executeQuery();
             if (rs1.next()) {
                 String encryptedPassword = rs1.getString("password");
-                //credentialsCorrect = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
-                credentialsCorrect = (password.equals(encryptedPassword));
+                credentialsCorrect = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
+                //credentialsCorrect = (password.equals(encryptedPassword));
             }
 
             JsonObject responseJsonObject = new JsonObject();
