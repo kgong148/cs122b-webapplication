@@ -1,0 +1,98 @@
+<casts>
+    <dirfilms>
+        <dirid>AA</dirid>
+        <is>Asquith</is>
+        <castnote>Actors and notes.</castnote>
+        <filmc>
+            <m>
+                <f>AA13</f>
+                <t>Pygmalion</t>
+                <a>Leslie Howard</a>
+                <p>Sci</p>
+                <r>smug professor</r>
+                <n>Higgins</n>
+                <awards>
+                    <award>AAN</award>
+                </awards>
+            </m>
+            <m>
+                <f>AA13</f>
+                <t>Pygmalion</t>
+                <a>Wendy Hiller</a>
+                <p>Inn</p>
+                <r>flower girl</r>
+                <n>Eliza</n>
+                <awards>
+                    <award>AAN</award>
+                </awards>
+            </m>
+            <m>
+                <f>AA13</f>
+                <t>Pygmalion</t>
+                <a>Wilfrid Lawson</a>
+                <p>Sdk</p>
+                <r>Eliza's father</r>
+                <n>Dolittle</n>
+            </m>
+            <m>
+                <f>AA13</f>
+                <t>Pygmalion</t>
+                <a>Scott Sunderland</a>
+                <p>Und</p>
+                <r>betting Colonel</r>
+                <n>Pickering</n>
+            </m>
+            <m>
+                <f>AA13</f>
+                <t>Pygmalion</t>
+                <a>Marie Lohr</a>
+                <p>Und</p>
+                <r/>
+                <n>Mrs.Higgins</n>
+            </m>
+            <m>
+                <f>AA13</f>
+                <t>Pygmalion</t>
+                <a>Iris Hoey</a>
+                <p>Und</p>
+                <r/>
+            </m>
+            <m>
+                <f>AA13</f>
+                <t>Pygmalion</t>
+                <a>David Tree</a>
+                <p>Und</p>
+                <r>fop</r>
+                <n>Freddie Eynsford-Hill</n>
+            </m>
+            <m>
+                <f>AA13</f>
+                <t>Pygmalion</t>
+                <a>Esme Percy</a>
+                <p>Und</p>
+                <r/>
+            </m>
+            <m>
+                <f>AA13</f>
+                <t>Pygmalion</t>
+                <a>Everley Gregg</a>
+                <p>Und</p>
+                <r/>
+            </m>
+            <m>
+                <f>AA13</f>
+                <t>Pygmalion</t>
+                <a>O.B. Clarence</a>
+                <p>Und</p>
+                <r/>
+            </m>
+            <m>
+                <f>AA13</f>
+                <t>Pygmalion</t>
+                <a>Jean Cadell</a>
+                <p>Und</p>
+                <r/>
+            </m>
+        </filmc>
+    </dirfilms>
+</casts>
