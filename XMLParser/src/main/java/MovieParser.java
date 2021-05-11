@@ -132,6 +132,15 @@ public class MovieParser extends DefaultHandler {
                 csvWriter.flush();
                 csvWriter.close();
 
+                // append to ratings file
+                csvWriter = new FileWriter("ratings.csv", true);
+                csvWriter.append(tempMov.getId());
+                csvWriter.append("\n");
+
+                //Close csv file
+                csvWriter.flush();
+                csvWriter.close();
+
                 // append to genre csv file
                 /*
                 if(tempMov.getGenreId() != 0 && myGenres.contains(tempVal) != t) {
