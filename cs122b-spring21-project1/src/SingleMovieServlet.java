@@ -61,21 +61,12 @@ public class SingleMovieServlet extends HttpServlet {
 
             // Construct a query with parameter represented by "?"
             //String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m, ratings as r where s.id = sim.starId and sim.movieId = m.id and r.movieId = m.id and m.id = ?";
-            String query = "SELECT DISTINCT s.name, sim.movieId, m.title, m.year, m.director, m.price, " +
-                    "r.rating, sim.starId, MA.ma " +
-                    "from stars as s, stars_in_movies as sim, stars_in_movies as sim2, " +
-                    "movies as m, ratings as r, " +
-                    "(SELECT id, COUNT(movieId) AS ma " +
-                    "FROM stars, stars_in_movies " +
-                    "WHERE starId = id " +
-                    "GROUP BY name) as MA " +
-                    "where s.id = sim.starId " +
-                    "and sim.movieId = m.id " +
-                    "and r.movieId = m.id " +
-                    "and sim2.starId = s.id " +
-                    "and MA.id = s.id " +
-                    "and m.id = ? " +
-                    "ORDER BY MA.ma DESC, s.name ASC";
+            String query = "SELECT DISTINCT sim1.starId, s.name  " +
+                    "FROM stars_in_movies sim1, stars_in_movies sim2, movies m, stars s " +
+                    "WHERE m.id = sim1.movieId AND sim1.starId = sim2.starId AND sim1.starId = s.id " +
+                    "AND sim1.movieId = ? " +
+                    "GROUP BY sim1.starId " +
+                    "ORDER BY COUNT(sim2.movieId) DESC, s.name ASC";
 
 
             // Declare our statement
@@ -88,18 +79,30 @@ public class SingleMovieServlet extends HttpServlet {
             // Perform the query
             ResultSet rs = statement.executeQuery();
 
+            String query2 = "SELECT m.id, m.title, m.year, m.director, m.price, r.rating FROM movies m, ratings r WHERE m.id = r.movieId AND m.id = ?";
+
+            // Declare our statement
+            PreparedStatement statement2 = dbcon.prepareStatement(query2);
+
+            // Set the parameter represented by "?" in the query to the id we get from url,
+            // num 1 indicates the first "?" in the query
+            statement2.setString(1, id);
+
+            // Perform the query
+            ResultSet rs2 = statement2.executeQuery();
+
             JsonArray jsonArray = new JsonArray();
 
             //adding genres
             JsonObject jsonObject_g = new JsonObject();
-            int count = 0;
+            rs2.next();
             rs.next();
-            String movieId = rs.getString("movieId");
-            String movieTitle = rs.getString("title");
-            String movieYear = rs.getString("year");
-            String movieDirector = rs.getString("director");
-            String movieRating = rs.getString("rating");
-            String moviePrice = rs.getString("price");
+            String movieId = rs2.getString("id");
+            String movieTitle = rs2.getString("title");
+            String movieYear = rs2.getString("year");
+            String movieDirector = rs2.getString("director");
+            String movieRating = rs2.getString("rating");
+            String moviePrice = rs2.getString("price");
 
             String return_url = (String) request.getSession(true).getAttribute("movieListURL");
             jsonObject_g.addProperty("movie_id", movieId);
@@ -112,19 +115,12 @@ public class SingleMovieServlet extends HttpServlet {
             jsonObject_g.addProperty("star_name", rs.getString("name"));
             jsonObject_g.addProperty("return_url", return_url);
 
-            rs1.next();
             int i = 0;
             while(rs1.next())
             {
                 jsonObject_g.addProperty("movie_genres_"+ i++,rs1.getString("name"));
             }
             jsonObject_g.addProperty("genre_size",i);
-//            String movie_genres = rs1.getString("name");
-//            while(rs1.next())
-//            {
-//                movie_genres += ", " + rs1.getString("name");
-//            }
-//            jsonObject_g.addProperty("movie_genres",movie_genres);
             jsonArray.add(jsonObject_g);
 
             // Iterate through each row of rs
@@ -148,7 +144,11 @@ public class SingleMovieServlet extends HttpServlet {
             response.setStatus(200);
 
             rs.close();
+            rs1.close();
+            rs2.close();
             statement.close();
+            s1.close();
+            statement2.close();
             dbcon.close();
         } catch (Exception e) {
             // write error message JSON object to output
