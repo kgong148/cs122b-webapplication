@@ -51,6 +51,9 @@ BEGIN
 	-- inserts movie, genre into genres_in_movies
     INSERT INTO genres_in_movies (genreId, movieId)
 		VALUES (genreId, movieId);
+      	-- insert a default rating
+    INSERT INTO ratings (movieId, rating)
+		VALUES (movieId, null);
     END$$
     -- Change back DELIMITER to ; 
     DELIMITER ; 
