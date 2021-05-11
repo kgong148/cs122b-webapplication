@@ -53,7 +53,7 @@ public class ShoppingCartServlet extends HttpServlet {
             {
                 String id = entry.getKey();
                 Integer qty = entry.getValue();
-                String query = "SELECT m.id, m.title, m.price FROM movies m WHERE m.id = /'?/'";
+                String query = "SELECT m.id, m.title, m.price FROM movies m WHERE m.id = ?";
 
                 // Declare our statement
                 PreparedStatement statement = dbcon.prepareStatement(query);
