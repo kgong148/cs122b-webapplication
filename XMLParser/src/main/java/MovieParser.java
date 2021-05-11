@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
@@ -19,6 +20,7 @@ import java.util.regex.Pattern;
 public class MovieParser extends DefaultHandler {
 
     List<Movie> myMovies;
+    List<String> myGenres;
 
     private String tempVal;
     private String currentDir;
@@ -29,12 +31,27 @@ public class MovieParser extends DefaultHandler {
 
     public MovieParser() {
         myMovies = new ArrayList<Movie>();
+        myGenres = new ArrayList<String>();
     }
 
-    public void runExample() throws SQLException {
+    public void runExample() throws IOException {
         parseDocument();
         // test to make sure right data is pulled
         //printData();
+        //Add to genre csv file
+        FileWriter csvWriter = new FileWriter("genre.csv", true);
+        for(int i = 0; i < myGenres.size(); i++){
+            int tempID = 0;
+            for(int j = 0; j < myGenres.get(i).length(); j++){
+                tempID += myGenres.get(i).charAt(j);
+            }
+            csvWriter.append("" + tempID);
+            csvWriter.append(",");
+            csvWriter.append(myGenres.get(i));
+            csvWriter.append("\n");
+        }
+        csvWriter.flush();
+        csvWriter.close();
     }
 
     private void parseDocument() {
@@ -116,26 +133,31 @@ public class MovieParser extends DefaultHandler {
                 csvWriter.close();
 
                 // append to genre csv file
-                csvWriter = new FileWriter("genre.csv", true);
-                csvWriter.append("" + tempMov.getGenreId());
-                csvWriter.append(",");
-                csvWriter.append(tempMov.getGenre());
-                csvWriter.append("\n");
+                /*
+                if(tempMov.getGenreId() != 0 && myGenres.contains(tempVal) != t) {
+                    csvWriter = new FileWriter("genre.csv", true);
+                    csvWriter.append("" + tempMov.getGenreId());
+                    csvWriter.append(",");
+                    csvWriter.append(tempMov.getGenre());
+                    csvWriter.append("\n");
 
-                //Close csv file
-                csvWriter.flush();
-                csvWriter.close();
+                    //Close csv file
+                    csvWriter.flush();
+                    csvWriter.close();
+                }*/
+                    // append to genres in movies csv file
+                if(tempMov.getGenreId() != 0) {
+                    csvWriter = new FileWriter("genres_in_movies.csv", true);
+                    csvWriter.append("" + tempMov.getGenreId());
+                    csvWriter.append(",");
+                    csvWriter.append("" + tempMov.getId());
+                    csvWriter.append("\n");
 
-                // append to genres in movies csv file
-                csvWriter = new FileWriter("genres_in_movies.csv", true);
-                csvWriter.append("" + tempMov.getGenreId());
-                csvWriter.append(",");
-                csvWriter.append("" + tempMov.getId());
-                csvWriter.append("\n");
+                    //Close csv file
+                    csvWriter.flush();
+                    csvWriter.close();
+                }
 
-                //Close csv file
-                csvWriter.flush();
-                csvWriter.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -150,21 +172,31 @@ public class MovieParser extends DefaultHandler {
             //Also set the director
             tempMov.setDirector(currentDir);
         } else if (qName.equalsIgnoreCase("cat")) {
-            tempMov.setGenre(tempVal);
             // Set genre id. id = sum of ascii chars
             int tempID = 0;
             for(int i = 0; i < tempVal.length(); i++){
                 tempID += tempVal.charAt(i);
             }
-            tempMov.setGenreId(tempID + tempMov.getYear());
+            // Remove dups and null genres
+            if(myGenres.contains(tempVal) != true && tempID !=0){
+                myGenres.add(tempVal);
+            }
 
+            if(tempID == 0) {
+                tempMov.setGenre("null");
+                tempMov.setGenreId(tempID);
+            }
+            else{
+                tempMov.setGenre(tempVal);
+                tempMov.setGenreId(tempID);
+            }
         }else if (qName.equalsIgnoreCase("t")) {
             tempMov.setTitle(tempVal);
         }
 
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws IOException {
         MovieParser spe = new MovieParser();
         spe.runExample();
     }

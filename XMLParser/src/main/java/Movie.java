@@ -8,8 +8,20 @@ public class Movie {
     private int genreId;
 
     public Movie(){
+        /*
+        String loginUser = "mytestuser";
+        String loginPasswd = "My6$Password";
+        String loginUrl = "jdbc:mysql://localhost:3306/moviedb?allowLoadLocalInfile=true";
 
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+        Statement statement = connection.createStatement();
+        // Get a connection from dataSource
+        // add to movie table
+        String query = "Max"
+    */
     }
+
 
     public Movie(String director, int year, String id,String title, String genre, int genreId) {
         this.director = director;
