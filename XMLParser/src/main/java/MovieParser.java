@@ -14,6 +14,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class MovieParser extends DefaultHandler {
 
@@ -24,7 +25,7 @@ public class MovieParser extends DefaultHandler {
 
     //to maintain context
     private Movie tempMov;
-
+    private Pattern isNumeric = Pattern.compile("-?\\d+(\\.\\d+)?");
 
     public MovieParser() {
         myMovies = new ArrayList<Movie>();
@@ -142,7 +143,8 @@ public class MovieParser extends DefaultHandler {
             // Set current director once since it covers many films
             currentDir = tempVal;
         } else if (qName.equalsIgnoreCase("year")) {
-            tempMov.setYear(Integer.parseInt(tempVal));
+            if(isNumeric.matcher(tempVal).matches())
+                tempMov.setYear(Integer.parseInt(tempVal));
         } else if (qName.equalsIgnoreCase("fid")) {
             tempMov.setId(tempVal);
             //Also set the director

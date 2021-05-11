@@ -21,37 +21,37 @@ public class MainParser {
                 "LINES TERMINATED BY '\\n'\n" +
                 "IGNORE 1 ROWS;";
 
-        String query2 = "LOAD DATA INFILE 'CastParser.csv' \n" +
+        String query2 = "LOAD LOCAL DATA INFILE 'CastParser.csv' \n" +
                 "INTO TABLE stars_in_movies \n" +
                 "FIELDS TERMINATED BY ',' \n" +
                 "LINES TERMINATED BY '\\n'\n" +
                 "IGNORE 1 ROWS;";
 
-        String query3 = "LOAD DATA INFILE 'genre.csv' \n" +
+        String query3 = "LOAD LOCAL DATA INFILE 'genre.csv' \n" +
                 "INTO TABLE genres \n" +
                 "FIELDS TERMINATED BY ',' \n" +
                 "LINES TERMINATED BY '\\n'\n" +
                 "IGNORE 1 ROWS;";
 
-        String query4 = "LOAD DATA INFILE 'genres_in_movies.csv' \n" +
+        String query4 = "LOAD LOCAL DATA INFILE 'genres_in_movies.csv' \n" +
                 "INTO TABLE genres_in_movies \n" +
                 "FIELDS TERMINATED BY ',' \n" +
                 "LINES TERMINATED BY '\\n'\n" +
                 "IGNORE 1 ROWS;";
 
-        String query5 = "LOAD DATA INFILE 'MovieParser.csv' \n" +
+        String query5 = "LOAD LOCAL DATA INFILE 'MovieParser.csv' \n" +
                 "INTO movies \n" +
                 "FIELDS TERMINATED BY ',' \n" +
                 "LINES TERMINATED BY '\\n'\n" +
                 "IGNORE 1 ROWS;";
-/*
-        statement.executeQuery(query);
-        statement.executeQuery(query2);
-        statement.executeQuery(query3);
-        statement.executeQuery(query4);
-        statement.executeQuery(query5);
 
- */
+//        statement.executeUpdate(query);
+//        statement.executeUpdate(query2);
+//        statement.executeUpdate(query3);
+//        statement.executeUpdate(query4);
+//        statement.executeUpdate(query5);
+
+
         statement.close();
         connection.close();
     }

@@ -15,6 +15,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ActorParser extends DefaultHandler {
 
@@ -24,6 +25,8 @@ public class ActorParser extends DefaultHandler {
 
     //to maintain context
     private Actor tempAct;
+
+    private Pattern isNumeric = Pattern.compile("-?\\d+(\\.\\d+)?");
 
     public ActorParser() {
         myActors = new ArrayList<Actor>();
@@ -118,7 +121,8 @@ public class ActorParser extends DefaultHandler {
             tempAct.setActorID("" + tempID);
         } else if (qName.equalsIgnoreCase("dob")) {
             // Set actors birth date
-            tempAct.setDob(Integer.parseInt(tempVal));
+            if(isNumeric.matcher(tempVal).matches())
+                tempAct.setDob(Integer.parseInt(tempVal));
         }
     }
 
