@@ -1,0 +1,33 @@
+<actors>
+    <!--  A AAAAA   -->
+    <actor>
+        <stagename>Willie Aames</stagename>
+        <dowstart/>
+        <dowend/>
+        <familyname>Aames</familyname>
+        <firstname>William</firstname>
+        <gender>M</gender>
+        <dob>1960</dob>
+        <dod>1984+</dod>
+        <roletype>unknown</roletype>
+        <origin>\Am</origin>
+        <picref/>
+        <relationships/>
+        <notes/>
+    </actor>
+    <actor>
+        <stagename>Alex Diaz</stagename>
+        <dowstart/>
+        <dowend/>
+        <familyname>Aames</familyname>
+        <firstname>William</firstname>
+        <gender>M</gender>
+        <dob>2000</dob>
+        <dod>1984+</dod>
+        <roletype>unknown</roletype>
+        <origin>\Am</origin>
+        <picref/>
+        <relationships/>
+        <notes/>
+    </actor>
+</actors>
