@@ -10,18 +10,12 @@ https://drive.google.com/file/d/1hmab_42zfDl186Nd4ZkZIPTcR-N_panc/view?usp=shari
  hub.com/UCI-Chenli-teaching/cs122b-spring21-team-87.git. Afterwards, you will go to the directory that contains the pom.xml file and run the command mvn package. This will create a target file that contains the war file that needs to be deployed on Tomcat. In order to deploy this war file you need to copy it into the directory /var/lib/tomcat9/webapps/, this can be done with the command cp ./target/*.war /var/lib/tomcat9/webapps/. Once the war file is in this directory it will be deployed through Tomcat. You can view this through a webpage by going to the URL "http://ec2-<ip address>.us-east-2.compute.amazonaws.com:8080/manager". The application can then be viewed with the URL "http://ec2-<ip address>.us-east-2.compute.amazonaws.com:8080/cs122b-spring21-project1". You then need to run the files createtable.sql, createEmployeeTable.sql, stored-procedure.sql and addPriceCol.sql. The first file fist creates and populates all the schemas needed for this application the second file creates a table for employee information so they can access the dashboard, the third file processes the data added through the dashboard, and last file  adds a column to the movies page that has the initial price of each movie. You also need to encrypt the passwords of the customers table. The last thing you need to do is add the secret key in RecaptchaConstant.java.
 
  ## Queries with Prepared Statements
- DashboardLoginServlet.java:
-  - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/DashboardLoginServlet.java
-DashboardServlet.java:
-  - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/DashboardServlet.java
-MovieListServlet.java:
-  - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/MovieListServlet.java
-PaymentPageServlet.java:
-  - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/PaymentPageServlet.java
-ShoppingCartServlet.java:
-  - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/ShoppingCartServlet.java
-SingleMovieServlet.java:
- - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/SingleMovieServlet.java
+  - DashboardLoginServlet.java: https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/DashboardLoginServlet.java
+  - DashboardServlet.java: https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/DashboardServlet.java
+  - MovieListServlet.java: https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/MovieListServlet.java
+  - PaymentPageServlet.java: https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/PaymentPageServlet.java
+  - ShoppingCartServlet.java: https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/ShoppingCartServlet.java
+ - SingleMovieServlet.java: https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/SingleMovieServlet.java
 
 ## Two parsing time optimization strategies
 The parsing strategies we took to optimize the parsing was to load the data into memory to check for duplicates then append the data to a .csv file which we later used LOAD DATA with the .csv file in mysql to add the data to the database. These strategies are better to use than the naive approach because it in the naive approach you first need to execute a query to see if the record is a duplicate, this can be costly, especially if it is done for every record. It is better to check for duplicates in memory so you don't have to execute so many querys just to check for duplicates. Then, in the naive approach, after the record is checked if it's a duplicate a querey is parsed and executed to add that record to the table. Again this is costly so a better way to do this is to append the data to a file and load that file into the database with the LOAD DATA method. In this meathod, each record from the file is added without executing it's own query, which is less costly.
