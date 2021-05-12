@@ -12,13 +12,13 @@ https://drive.google.com/file/d/1hmab_42zfDl186Nd4ZkZIPTcR-N_panc/view?usp=shari
  ## Queries with Prepared Statements
  DashboardLoginServlet.java:
   - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/DashboardLoginServlet.java
- DashboardServlet.java:
+DashboardServlet.java:
   - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/DashboardServlet.java
- MovieListServlet.java:
+MovieListServlet.java:
   - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/MovieListServlet.java
- PaymentPageServlet.java:
+PaymentPageServlet.java:
   - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/PaymentPageServlet.java
- ShoppingCartServlet.java:
+ShoppingCartServlet.java:
   - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/ShoppingCartServlet.java
 SingleMovieServlet.java:
  - https://github.com/UCI-Chenli-teaching/cs122b-spring21-team-87/blob/3dc2f8ff42b3b79bfb6e12a46af23d90b65340ad/cs122b-spring21-project1/src/SingleMovieServlet.java
