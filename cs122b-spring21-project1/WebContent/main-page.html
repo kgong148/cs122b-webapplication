@@ -11,6 +11,18 @@
             padding:2pt;
         }
     </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- include jquery autocomplete JS  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.7/jquery.autocomplete.min.js"></script>
+
+    <!-- Bootstrap for CSS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body BGCOLOR="#FDF5E6">
@@ -20,7 +32,7 @@
 <form id="search_form" method="get" action="#">
     <label><b>Title</b></label>
     <label>
-        <input name="title" placeholder="Title" type="text">
+        <input name="title" id="title_search" class="autocomplete-searchbox form-control" placeholder="Title" type="text">
     </label>
     <br>
     <label><b>Year</b></label>
@@ -48,11 +60,6 @@
     <h3>Title</h3>
     <ul id="title_list"></ul>
 </div>
-<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 <script src='main-page.js'></script>
 </body>

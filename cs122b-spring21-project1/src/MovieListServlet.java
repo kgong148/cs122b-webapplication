@@ -14,7 +14,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.Hashtable;
 import javax.servlet.http.HttpSession;
 
@@ -75,7 +74,16 @@ public class MovieListServlet extends HttpServlet {
                 conditions += " AND m.title LIKE '" + startsWith + "%' ";
         }
         else {
-            if (title != null) conditions += " AND m.title LIKE '%" + title + "%' ";
+            if (title != null)
+            {
+                //MATCH(title) AGAINST (? IN BOOLEAN MODE)
+                String title_str = "";
+                for(String str : title.split(" "))
+                {
+                    title_str += "+" + str +"* ";
+                }
+                conditions += " AND MATCH(m.title) AGAINST ('" + title_str + "' IN BOOLEAN MODE) ";
+            }
             if (year != null) conditions += " AND m.year = " + year + " ";
             if (director != null) conditions += " AND m.director LIKE '%" + director + "%' ";
             if (stars != null) conditions += " AND s.name LIKE '%" + stars + "%' ";
@@ -115,7 +123,6 @@ public class MovieListServlet extends HttpServlet {
                 count++;
 
                 String movie_id = rs.getString("id");
-                //System.out.println(rs.getString("title"));
                 String movie_title = rs.getString("title");
                 String movie_year = rs.getString("year");
                 String movie_director = rs.getString("director");
@@ -141,12 +148,6 @@ public class MovieListServlet extends HttpServlet {
                         "GROUP BY sim1.starId " +
                         "ORDER BY COUNT(sim2.movieId) DESC, s.name ASC " +
                         "LIMIT 3";
-
-//                String q2 = "SELECT DISTINCT s.name, s.id " +
-//                        "FROM movies m, stars_in_movies sim, stars s " +
-//                        "WHERE m.id = sim.movieId AND sim.starId = s.id " +
-//                        "AND m.id =? "+
-//                        "LIMIT 3";
 
                 PreparedStatement s2 = dbcon.prepareStatement(q2);
                 s2.setString(1, movie_id);
