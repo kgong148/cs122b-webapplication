@@ -34,6 +34,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        Boolean isAndroid = (request.getParameter("type") != null);
 
         /* This example only allows username/password to be test/test
         /  in the real project, you should talk to the database to verify username/password
@@ -41,22 +42,24 @@ public class LoginServlet extends HttpServlet {
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
-        //Check recaptcha response
-        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-        System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
 
-        // Verify reCAPTCHA
-        try {
-            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
-        } catch (Exception e) {
-            JsonObject responseJsonObject = new JsonObject();
-            responseJsonObject.addProperty("status", "fail");
-            responseJsonObject.addProperty("message", "recaptcha verification error");
-            response.getWriter().write(responseJsonObject.toString());
-            out.close();
-            return;
+        if(!isAndroid) {
+            //Check recaptcha response
+            String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+            System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
+
+            // Verify reCAPTCHA
+            try {
+                RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+            } catch (Exception e) {
+                JsonObject responseJsonObject = new JsonObject();
+                responseJsonObject.addProperty("status", "fail");
+                responseJsonObject.addProperty("message", "recaptcha verification error");
+                response.getWriter().write(responseJsonObject.toString());
+                out.close();
+                return;
+            }
         }
-
         boolean credentialsCorrect = false;
         try {
             // Get a connection from dataSource
