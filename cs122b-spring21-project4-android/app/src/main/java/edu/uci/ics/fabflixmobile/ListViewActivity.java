@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,22 +30,34 @@ public class ListViewActivity extends Activity {
     private final String domain = "cs122b-spring21-project1-war";
     private final String baseURL = "http://" + host + ":" + port + "/" + domain;
 
+    private Button prevButton;
+    private Button nextButton;
+
+    private int page = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview);
-        setMovies();
+        prevButton = findViewById(R.id.prevButton);
+        nextButton = findViewById(R.id.nextButton);
+        prevButton.setOnClickListener(view -> setMovies(-1));
+        nextButton.setOnClickListener(view -> setMovies(1));
+        setMovies(0);
+
     }
 
-    public void setMovies()
+    public void setMovies(int action)
     {
+        if(action == -1 && page-1 > 0) page--;
+        else if(action == 1) page++;
         ArrayList<Movie> movies = new ArrayList<>();
         // use the same network queue across our application
         final RequestQueue queue = NetworkManager.sharedManager(this).queue;
         // request type is POST
         final StringRequest movieListRequest = new StringRequest(
                 Request.Method.GET,
-                baseURL + "/api/movie-list",
+                baseURL + "/api/movie-list?amount=20&page="+page,
                 response -> {
                     try {
                         JSONArray responseJsonArray = new JSONArray(response);
@@ -74,6 +87,7 @@ public class ListViewActivity extends Activity {
                             movies.add(new Movie(title, id, Short.parseShort(year), director, genre_list, star_list));
                             Log.d("movie-within.success", ""+movies.size());
                         }
+
                         MovieListViewAdapter adapter = new MovieListViewAdapter(movies, this);
 
                         ListView listView = findViewById(R.id.list);
