@@ -7,9 +7,36 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin">
 
-    <ListView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/prevButton"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:text="previous" />
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Next" />
+
+        </LinearLayout>
+
+        <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </RelativeLayout>
