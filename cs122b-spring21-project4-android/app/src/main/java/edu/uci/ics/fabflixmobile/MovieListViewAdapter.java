@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class MovieListViewAdapter extends ArrayAdapter<Movie> {
     private final ArrayList<Movie> movies;
 
@@ -27,11 +29,35 @@ public class MovieListViewAdapter extends ArrayAdapter<Movie> {
         Movie movie = movies.get(position);
 
         TextView titleView = view.findViewById(R.id.title);
-        TextView subtitleView = view.findViewById(R.id.subtitle);
+        TextView yearView = view.findViewById(R.id.year);
+        TextView directorView = view.findViewById(R.id.director);
+        TextView genresView = view.findViewById(R.id.genres);
+        TextView starsView = view.findViewById(R.id.stars);
 
         titleView.setText(movie.getName());
         // need to cast the year to a string to set the label
-        subtitleView.setText(movie.getYear() + "");
+        yearView.setText(movie.getYear() + "");
+        directorView.setText("Director: "+movie.getDirector());
+
+        String[] genres = movie.getGenres();
+        String genres_str = "";
+        for(int i = 0; i < genres.length; i++)
+        {
+            if(genres[i].equals("")) break;
+            if(i > 0) genres_str+= ", ";
+            genres_str += genres[i];
+        }
+        genresView.setText("Genres: "+genres_str);
+
+        String[] stars = movie.getStars();
+        String stars_str = "";
+        for(int i = 0; i < stars.length; i++)
+        {
+            if(stars[i].equals("")) break;
+            if(i > 0) stars_str+= ", ";
+            stars_str += stars[i];
+        }
+        starsView.setText("Stars: "+stars_str);
 
         return view;
     }
