@@ -34,6 +34,7 @@ public class ListViewActivity extends Activity {
     private Button nextButton;
 
     private int page = 1;
+    private boolean last_page = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +50,26 @@ public class ListViewActivity extends Activity {
 
     public void setMovies(int action)
     {
-        if(action == -1 && page-1 > 0) page--;
-        else if(action == 1) page++;
+        if(action == -1 && page-1 <= 0) return;
+        if(action == 1 && last_page) return;
+        page+= action;
+        Bundle extras = getIntent().getExtras();
+        String searchtext = "";
+        if(extras !=null) {
+            searchtext = extras.getString("SEARCHTEXT");
+        }
+        if(searchtext.length() > 0)
+            searchtext = "&title=" +searchtext;
+        else
+            searchtext = "";
+        Log.d("Search-text-sucess", searchtext);
         ArrayList<Movie> movies = new ArrayList<>();
         // use the same network queue across our application
         final RequestQueue queue = NetworkManager.sharedManager(this).queue;
         // request type is POST
         final StringRequest movieListRequest = new StringRequest(
                 Request.Method.GET,
-                baseURL + "/api/movie-list?amount=20&page="+page,
+                baseURL + "/api/movie-list?amount=20&page="+(page+action)+searchtext,
                 response -> {
                     try {
                         JSONArray responseJsonArray = new JSONArray(response);
@@ -87,6 +99,9 @@ public class ListViewActivity extends Activity {
                             movies.add(new Movie(title, id, Short.parseShort(year), director, genre_list, star_list));
                             Log.d("movie-within.success", ""+movies.size());
                         }
+
+                        JSONObject jsonObject = (JSONObject) responseJsonArray.get(responseJsonArray.length()-1);
+                        last_page = Boolean.parseBoolean(jsonObject.getString("EndOfQuery"));
 
                         MovieListViewAdapter adapter = new MovieListViewAdapter(movies, this);
 
