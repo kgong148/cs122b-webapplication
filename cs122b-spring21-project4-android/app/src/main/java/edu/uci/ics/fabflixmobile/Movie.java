@@ -40,4 +40,10 @@ public class Movie {
     public String getId() {
         return id;
     }
+
+    @Override
+    public String toString()
+    {
+        return id +", " + name + ", " + year + ", " + director +", " + genres + ", " + stars;
+    }
 }
