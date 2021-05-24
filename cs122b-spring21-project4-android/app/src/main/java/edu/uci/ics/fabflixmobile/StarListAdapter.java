@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class StarListAdapter extends ArrayAdapter<String> {
     private final ArrayList<String> stars;
 
-    public StarListAdapter(ArrayList<String> stars, Context context) {
+    public StarListAdapter(ArrayList<String> stars, SingleMoviePage context) {
         super(context, R.layout.starrow, stars);
         this.stars = stars;
     }

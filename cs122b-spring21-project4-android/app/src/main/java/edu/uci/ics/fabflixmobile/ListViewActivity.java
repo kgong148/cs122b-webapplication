@@ -113,7 +113,8 @@ public class ListViewActivity extends Activity {
 
                             // initialize the activity(page)/destination
                             Intent moviePage = new Intent(ListViewActivity.this, SingleMoviePage.class);
-                            moviePage.putExtra("currMovie", movie);
+                            moviePage.putExtra("currMovie", movie.getName());
+                            moviePage.putExtra("id", movie.getId());
                             // activate the list page.
                             startActivity(moviePage);
 
