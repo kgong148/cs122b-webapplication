@@ -28,6 +28,7 @@ public class Login extends ActionBarActivity {
       In Android, localhost is the address of the device or the emulator.
       To connect to your machine, you need to use the below IP address
      */
+
     private final String host = "ec2-3-137-222-2.us-east-2.compute.amazonaws.com";
     private final String port = "8080";
     private final String domain = "cs122b-spring21-project1";
@@ -42,7 +43,7 @@ public class Login extends ActionBarActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         message = findViewById(R.id.message);
-        loginButton = findViewById(R.id.login);
+        loginButton = findViewById(R.id.loginButton);
 
         //assign a listener to call a function to handle the user request when clicking a button
         loginButton.setOnClickListener(view -> login());
@@ -58,8 +59,6 @@ public class Login extends ActionBarActivity {
                 Request.Method.POST,
                 baseURL + "/api/login",
                 response -> {
-                    // TODO: should parse the json response to redirect to appropriate functions
-                    //  upon different response value.
                     String status = "";
                     String m = "";
                     try {
@@ -73,7 +72,7 @@ public class Login extends ActionBarActivity {
                         Log.d("login.success", response);
                         // initialize the activity(page)/destination
                         message.setText(m);
-                        Intent listPage = new Intent(Login.this, ListViewActivity.class);
+                        Intent listPage = new Intent(Login.this, Mainpage.class);
                         // activate the list page.
                         startActivity(listPage);
                     }
