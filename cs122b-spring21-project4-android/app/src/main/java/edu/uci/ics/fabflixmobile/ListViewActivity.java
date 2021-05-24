@@ -80,7 +80,7 @@ public class ListViewActivity extends Activity {
                             Log.d("movie-list.success", jsonObject.toString());
                             String title = jsonObject.getString("movie_title");
                             String year = jsonObject.getString("movie_year");
-                            String id = jsonObject.getString("movie_id");
+                            String movie_id = jsonObject.getString("movie_id");
                             String director = jsonObject.getString("movie_director");
                             String[] genre_list = new String[3];
                             for(int j = 0; j < 3; j++)
@@ -96,7 +96,7 @@ public class ListViewActivity extends Activity {
                                 if(star == null) break;
                                 star_list[k] = star;
                             }
-                            movies.add(new Movie(title, id, Short.parseShort(year), director, genre_list, star_list));
+                            movies.add(new Movie(title, movie_id, Short.parseShort(year), director, genre_list, star_list));
                             Log.d("movie-within.success", ""+movies.size());
                         }
 
@@ -111,6 +111,7 @@ public class ListViewActivity extends Activity {
                         listView.setOnItemClickListener((parent, view, position, id) -> {
                             Movie movie = movies.get(position);
                             String message = String.format("Clicked on position: %d, name: %s, %d", position, movie.getName(), movie.getYear());
+                            Log.d("click.success", message);
                             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                         });
                     } catch (JSONException e) {
