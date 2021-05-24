@@ -28,9 +28,9 @@ public class Login extends ActionBarActivity {
       In Android, localhost is the address of the device or the emulator.
       To connect to your machine, you need to use the below IP address
      */
-    private final String host = "10.0.2.2";
+    private final String host = "ec2-3-137-222-2.us-east-2.compute.amazonaws.com";
     private final String port = "8080";
-    private final String domain = "cs122b-spring21-project1-war";
+    private final String domain = "cs122b-spring21-project1";
     private final String baseURL = "http://" + host + ":" + port + "/" + domain;
 
 
