@@ -110,6 +110,13 @@ public class ListViewActivity extends Activity {
 
                         listView.setOnItemClickListener((parent, view, position, id) -> {
                             Movie movie = movies.get(position);
+
+                            // initialize the activity(page)/destination
+                            Intent moviePage = new Intent(ListViewActivity.this, SingleMoviePage.class);
+                            moviePage.putExtra("currMovie", movie);
+                            // activate the list page.
+                            startActivity(moviePage);
+
                             String message = String.format("Clicked on position: %d, name: %s, %d", position, movie.getName(), movie.getYear());
                             Log.d("click.success", message);
                             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
