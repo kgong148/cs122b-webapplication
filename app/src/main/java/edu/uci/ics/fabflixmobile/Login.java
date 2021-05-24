@@ -1,0 +1,104 @@
+package edu.uci.ics.fabflixmobile;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.*;
+
+public class Login extends ActionBarActivity {
+
+    private EditText username;
+    private EditText password;
+    private TextView message;
+    private Button loginButton;
+
+    /*
+      In Android, localhost is the address of the device or the emulator.
+      To connect to your machine, you need to use the below IP address
+     */
+
+    private final String host = "ec2-3-137-222-2.us-east-2.compute.amazonaws.com";
+    private final String port = "8080";
+    private final String domain = "cs122b-spring21-project1";
+    private final String baseURL = "http://" + host + ":" + port + "/" + domain;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // upon creation, inflate and initialize the layout
+        setContentView(R.layout.login);
+        username = findViewById(R.id.username);
+        password = findViewById(R.id.password);
+        message = findViewById(R.id.message);
+        loginButton = findViewById(R.id.loginButton);
+
+        //assign a listener to call a function to handle the user request when clicking a button
+        loginButton.setOnClickListener(view -> login());
+    }
+
+    public void login() {
+
+        message.setText("Trying to login");
+        // use the same network queue across our application
+        final RequestQueue queue = NetworkManager.sharedManager(this).queue;
+        // request type is POST
+        final StringRequest loginRequest = new StringRequest(
+                Request.Method.POST,
+                baseURL + "/api/login",
+                response -> {
+                    String status = "";
+                    String m = "";
+                    try {
+                        JSONObject responseJsonObject = new JSONObject(response);
+                        status = responseJsonObject.getString("status");
+                        m = responseJsonObject.getString("message");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if(status.equals("success")) {
+                        Log.d("login.success", response);
+                        // initialize the activity(page)/destination
+                        message.setText(m);
+                        Intent listPage = new Intent(Login.this, Mainpage.class);
+                        // activate the list page.
+                        startActivity(listPage);
+                    }
+                    else
+                    {
+                        Log.d("login.fail", m);
+                        message.setText(m);
+                    }
+                },
+                error -> {
+                    // error
+                    Log.d("login.error", error.toString());
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // POST request form data
+                final Map<String, String> params = new HashMap<>();
+                params.put("username", username.getText().toString());
+                params.put("password", password.getText().toString());
+                params.put("type", "android app");
+                return params;
+            }
+        };
+
+        // important: queue.add is where the login request is actually sent
+        queue.add(loginRequest);
+
+    }
+}
