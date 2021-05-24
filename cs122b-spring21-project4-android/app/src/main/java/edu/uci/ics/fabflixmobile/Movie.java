@@ -1,6 +1,8 @@
 package edu.uci.ics.fabflixmobile;
 
-public class Movie {
+import java.io.Serializable;
+
+public class Movie implements Serializable{
     private final String name;
     private final short year;
     private final String director;
