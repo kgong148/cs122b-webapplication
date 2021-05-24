@@ -78,7 +78,7 @@ function handleMovieResult(resultData)
         if(resultData[i]["movie_stars_2"] != "")
             rowHTML+= ", "+('<a href="single-star.html?id=' + resultData[i]['movie_stars_id_2'] + '">' + resultData[i]["movie_stars_2"] + '</a>');
         rowHTML+= "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
+        rowHTML += "<th>" + (resultData[i]["movie_rating"] == null ? "N/A" : resultData[i]["movie_rating"]) + "</th>";
         rowHTML += "<th>";
         rowHTML += '<input type="button" value="+" onclick="handleAddButton(\''+resultData[i]["movie_id"]+'\')">';
         rowHTML += "<th>";
