@@ -1,4 +1,28 @@
-﻿# cs122b-spring21-team-87 - Project 3
+﻿# cs122b-spring21-team-87 - Project 4
+ 
+ ## Demo Video URL
+ 
+https://drive.google.com/file/d/1uowX-pGwi73UcTIgFnpp494Uvfyne5xJ/view?usp=sharing
+
+ ## How to deploy applicaion with with Tomcat
+ In order to deploy the application on aws with Tomcat you need to have MySQL, Tomcat and maven installed on the aws instance and have it running. 
+ Once that is done you will create a directory that will contain the clone of this project. In this case the comand will be git clone https://git
+ hub.com/UCI-Chenli-teaching/cs122b-spring21-team-87.git. Afterwards, you will go to the directory that contains the pom.xml file and run the command mvn package. This will create a target file that contains the war file that needs to be deployed on Tomcat. In order to deploy this war file you need to copy it into the directory /var/lib/tomcat9/webapps/, this can be done with the command cp ./target/*.war /var/lib/tomcat9/webapps/. Once the war file is in this directory it will be deployed through Tomcat. You can view this through a webpage by going to the URL "http://ec2-<ip address>.us-east-2.compute.amazonaws.com:8080/manager". The application can then be viewed with the URL "http://ec2-<ip address>.us-east-2.compute.amazonaws.com:8080/cs122b-spring21-project1". You then need to run the files createtable.sql, createEmployeeTable.sql, stored-procedure.sql and addPriceCol.sql. The first file fist creates and populates all the schemas needed for this application the second file creates a table for employee information so they can access the dashboard, the third file processes the data added through the dashboard, and last file  adds a column to the movies page that has the initial price of each movie. You also need to encrypt the passwords of the customers table. The last thing you need to do is add the secret key in RecaptchaConstant.java. 
+
+ ## How to deploy mobile application
+ To deploy the mobile application, you need to open the the project in android studio and download an emulator. The emulator we use is the the Pixle 3a API 30. Once you have an emulator you can run the program and the application will automatically open on the emulator. It will first take you to the login page. After you login, you can search for a movie and a list of movies will be provided, depending on your search.
+
+## Member Contribution
+
+Kgong148: 
+ - Implemented full-text search and auto complete
+ - Contribute to android application
+ 
+adiaz18011:
+- Completed demo and readme file
+- Contribute to android application
+ 
+ # cs122b-spring21-team-87 - Project 3
  
  ## Demo Video URL
  
