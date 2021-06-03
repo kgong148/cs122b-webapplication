@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Main Page</title>
+    <style>
+        ul > li {
+            display: inline-block;
+            /* You can also add some margins here to make it look prettier */
+            zoom:1;
+            *display:inline;
+            padding:2pt;
+        }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- include jquery autocomplete JS  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.7/jquery.autocomplete.min.js"></script>
+
+    <!-- Bootstrap for CSS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body BGCOLOR="#FDF5E6">
+<h1 ALIGN="CENTER">Search/Browse</h1>
+<a href="shopping-cart.html" style="float:right">Check Out</a>
+<br>
+<form id="search_form" method="get" action="#">
+    <label><b>Title</b></label>
+    <label>
+        <input name="title" id="title_search" class="autocomplete-searchbox form-control" placeholder="Title" type="text">
+    </label>
+    <br>
+    <label><b>Year</b></label>
+    <label>
+        <input name="year" placeholder="Year" type="text">
+    </label>
+    <br>
+    <label><b>Director</b></label>
+    <label>
+        <input name="director" placeholder="Director" type="text">
+    </label>
+    <br>
+    <label><b>Stars</b></label>
+    <label>
+        <input name="stars" placeholder="Stars" type="text">
+    </label>
+    <br>
+    <input type="submit" value="Search">
+</form>
+<h2>Browse</h2>
+<div>
+    <h3>Genres</h3>
+    <ul id="genre_list"></ul>
+    <br>
+    <h3>Title</h3>
+    <ul id="title_list"></ul>
+</div>
+
+<script src='main-page.js'></script>
+</body>
+</html>
