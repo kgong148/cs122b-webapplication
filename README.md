@@ -1,21 +1,32 @@
 ﻿- # General
-    - #### Team#:
+    - #### Team#: 87
     
-    - #### Names:
+    - #### Names: Kevin Cui Gong
     
     - #### Project 5 Video Demo Link:
 
-    - #### Instruction of deployment:
+    - #### Instruction of deployment: In order to deploy the scaled version of Fabflix we have to have to run multiple instances in order to distribute the query workload. In this case we deployed 3 instances on AWS and 1 instance on GCP. Two of the instances on AWS have a master/slave relationship for sql queries and the other instance on AWS acts as a load balancer using apache2. The 1 instance on GCP acts as a load balancer too, again using apache2. The way to access Fabflix using these load balancer is simple. Use the URL http://public-ip:80/cs122b-spring21-project1/login.html the public ip address is of either the AWS instance that acts as a load balancer or the GCP instance. 
 
     - #### Collaborations and Work Distribution:
-
+    Kgong148: 
+    - Enabled JDBC connection pooling
+    - Set up Master/Slave AWS instances
+    - Measure preformance
+    - Create logging script
+    - Demo project 5
+ 
+    adiaz18011:
+    - Completed readme file
+    - Set up GCP environment
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
     
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
+    - Connection pooling is utilized in our Fabflix application by configuiring it when we defined our data source connection in contex.xml. Our configuration created a set of prepared connections that a query can use. The set contained the max amount of 100 connections but only allowed a max of 30 to be idle, otherwise resources would be reallocated. There is also a max wait time of 10 seconds before a connection is closed.
     
     - #### Explain how Connection Pooling works with two backend SQL.
+    - With two backend servers connecting to the database, they each have a set of prepared connections that they use for the queries they request.  
     
 
 - # Master/Slave
