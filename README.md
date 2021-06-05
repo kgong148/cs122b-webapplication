@@ -26,7 +26,7 @@
 
 - # JMeter TS/TJ Time Logs
     - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
-
+If there is only one log, use the process_log method.  Replace the file name with your file.  If there is two logs, use the process_logs method.  Replace the two file names with the two files.
 
 - # JMeter TS/TJ Time Measurement Report
 
