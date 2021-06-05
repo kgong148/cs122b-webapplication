@@ -40,7 +40,7 @@
 | **Scaled Version Test Plan**                   | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
 |------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
 | Case 1: HTTP/1 thread                          | ![](path to image in img/)   | 113                         | 3.5230113647370413                                  | 3.445580302686341                        | ??           |
-| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | 108                         | 3055322.6446969695                                  | 2997356.0643939395                        | ??           |
+| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | 108                         | 3.0553226446969695                                  | 2.9973560643939395                        | ??           |
 | Case 3: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
  # cs122b-spring21-team-87 - Project 4
  
