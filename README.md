@@ -33,7 +33,7 @@
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
 
     - #### How read/write requests were routed to Master/Slave SQL?
-    
+    Two data sources were created in context.xml.  One led to the master instance and one led to localhost.  In all servlets that only needed to read, the localhost data source was initialized.  If the servlet needed to write, the master instance data source was initialized.
 
 - # JMeter TS/TJ Time Logs
     - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
