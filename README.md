@@ -46,13 +46,13 @@ If there is only one log, use the process_log method.  Replace the file name wit
 | Case 1: HTTP/1 thread                          | ![](path to image in img/)   | 107                         | 3.75724770                                  | 3.69252745                        | Should be faster than case 4           |
 | Case 2: HTTP/10 threads                        | ![](path to image in img/)   | 114                         | 4.44558967828723                                  | 4.411849183781736                        | Should be faster than case 1, since 10 threads are querying at the same time           |
 | Case 3: HTTPS/10 threads                       | ![](path to image in img/)   | 120                         | 4.6549440852272725                                  | 4.634220925                        | Due to the added security it should take longer than case 2           |
-| Case 4: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | 114                         | 6.534029115909091                                  | 6.481066507196969                        | ??           |
+| Case 4: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | 114                         | 6.534029115909091                                  | 6.481066507196969                        | Should be longer than case 2, since there is only 1 connection without connection pooling           |
 
 | **Scaled Version Test Plan**                   | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
 |------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
 | Case 1: HTTP/1 thread                          | ![](path to image in img/)   | 113                         | 3.5230113647370413                                  | 3.445580302686341                        | Should be similar to the single-instance case 1 since it will only make use of one instance           |
 | Case 2: HTTP/10 threads                        | ![](path to image in img/)   | 108                         | 3.0553226446969695                                  | 2.9973560643939395                        | Should be faster than case 1, since the workload of each instance is halved           |
-| Case 3: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 3: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | 124                         | 4442499.990151515                                  | 4379735.014015151                        | Should be longer than case 2, since there is only 1 connection without connection pooling           |
  # cs122b-spring21-team-87 - Project 4
  
  ## Demo Video URL
