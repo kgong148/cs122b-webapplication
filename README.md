@@ -1,11 +1,12 @@
 ﻿- # General
     - #### Team#: 87
     
-    - #### Names: Kevin Cui Gong
+    - #### Names: Kevin Cui Gong, Andres Diaz
     
     - #### Project 5 Video Demo Link: https://drive.google.com/file/d/1_ykZhB7S0Kxz4kP8zD0WJtNIadAmcM41/view?usp=sharing
 
-    - #### Instruction of deployment: In order to deploy the scaled version of Fabflix we have to have to run multiple instances in order to distribute the query workload. In this case we deployed 3 instances on AWS and 1 instance on GCP. Two of the instances on AWS have a master/slave relationship for sql queries and the other instance on AWS acts as a load balancer using apache2. The 1 instance on GCP acts as a load balancer too, again using apache2. The way to access Fabflix using these load balancer is simple. Use the URL http://public-ip:80/cs122b-spring21-project1/login.html the public ip address is of either the AWS instance that acts as a load balancer or the GCP instance. 
+    - #### Instruction of deployment: 
+    - In order to deploy the scaled version of Fabflix we have to have to run multiple instances in order to distribute the query workload. In this case we deployed 3 instances on AWS and 1 instance on GCP. Two of the instances on AWS have a master/slave relationship for sql queries and the other instance on AWS acts as a load balancer using apache2. The 1 instance on GCP acts as a load balancer too, again using apache2. The way to access Fabflix using these load balancer is simple. Use the URL http://public-ip:80/cs122b-spring21-project1/login.html the public ip address is of either the AWS instance that acts as a load balancer or the GCP instance. 
 
     - #### Collaborations and Work Distribution:
     Kgong148: 
@@ -21,25 +22,25 @@
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
-        /WebContent/META-INF/context.xml
-        All .java Servlets that access the database
+        - /WebContent/META-INF/context.xml
+        -All .java Servlets that access the database
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
-    - Connection pooling is utilized in our Fabflix application by configuiring it when we defined our data source connection in contex.xml. Our configuration created a set of prepared connections that a query can use. The set contained the max amount of 100 connections but only allowed a max of 30 to be idle, otherwise resources would be reallocated. There is also a max wait time of 10 seconds before a connection is closed.
+        - Connection pooling is utilized in our Fabflix application by configuiring it when we defined our data source connection in contex.xml. Our configuration created a set of prepared connections that a query can use. The set contained the max amount of 100 connections but only allowed a max of 30 to be idle, otherwise resources would be reallocated. There is also a max wait time of 10 seconds before a connection is closed.
     
     - #### Explain how Connection Pooling works with two backend SQL.
-    - With two backend servers connecting to the database, they each have a set of prepared connections that they use for the queries they request.  
+        - With two backend servers connecting to the database, they each have a set of prepared connections that they use for the queries they request.  
     
 
 - # Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
-        /cs122b-spring21-project1-replication/WebContent/META-INF/context.xml
-        All .java Servlets that access the database
+        - /cs122b-spring21-project1-replication/WebContent/META-INF/context.xml
+        - All .java Servlets that access the database
     - #### How read/write requests were routed to Master/Slave SQL?
-    Two data sources were created in context.xml.  One led to the master instance and one led to localhost.  In all servlets that only needed to read, the localhost data source was initialized.  If the servlet needed to write, the master instance data source was initialized.
+        - Two data sources were created in context.xml.  One led to the master instance and one led to localhost.  In all servlets that only needed to read, the localhost data source was initialized.  If the servlet needed to write, the master instance data source was initialized.
 
 - # JMeter TS/TJ Time Logs
     - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
-If there is only one log, use the process_log method.  Replace the file name with your file.  If there is two logs, use the process_logs method.  Replace the two file names with the two files.  The log files must have two numbers per row, separated by a space.  Each row represents a query.  The first number represents the TS, while the second number represents the TJ.  
+        - If there is only one log, use the process_log method.  Replace the file name with your file.  If there is two logs, use the process_logs method.  Replace the two file names with the two files.  The log files must have two numbers per row, separated by a space.  Each row represents a query.  The first number represents the TS, while the second number represents the TJ.  
 
 - # JMeter TS/TJ Time Measurement Report
 
