@@ -22,6 +22,7 @@
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
         /WebContent/META-INF/context.xml
+        All .java Servlets that access the database
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
     - Connection pooling is utilized in our Fabflix application by configuiring it when we defined our data source connection in contex.xml. Our configuration created a set of prepared connections that a query can use. The set contained the max amount of 100 connections but only allowed a max of 30 to be idle, otherwise resources would be reallocated. There is also a max wait time of 10 seconds before a connection is closed.
     
@@ -32,6 +33,7 @@
 - # Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
         /cs122b-spring21-project1-replication/WebContent/META-INF/context.xml
+        All .java Servlets that access the database
     - #### How read/write requests were routed to Master/Slave SQL?
     Two data sources were created in context.xml.  One led to the master instance and one led to localhost.  In all servlets that only needed to read, the localhost data source was initialized.  If the servlet needed to write, the master instance data source was initialized.
 
