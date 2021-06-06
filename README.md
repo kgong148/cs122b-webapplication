@@ -3,7 +3,7 @@
     
     - #### Names: Kevin Cui Gong
     
-    - #### Project 5 Video Demo Link:
+    - #### Project 5 Video Demo Link: https://drive.google.com/file/d/1_ykZhB7S0Kxz4kP8zD0WJtNIadAmcM41/view?usp=sharing
 
     - #### Instruction of deployment: In order to deploy the scaled version of Fabflix we have to have to run multiple instances in order to distribute the query workload. In this case we deployed 3 instances on AWS and 1 instance on GCP. Two of the instances on AWS have a master/slave relationship for sql queries and the other instance on AWS acts as a load balancer using apache2. The 1 instance on GCP acts as a load balancer too, again using apache2. The way to access Fabflix using these load balancer is simple. Use the URL http://public-ip:80/cs122b-spring21-project1/login.html the public ip address is of either the AWS instance that acts as a load balancer or the GCP instance. 
 
